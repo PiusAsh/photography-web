@@ -35,7 +35,7 @@
             </div>
             
             <div class="cart-items-list">
-              <div class="cart-item" *ngFor="let item of cartItems; trackBy: trackByItem">
+              <div class="cart-item" *ngFor="let item of cartItems; trackBy: trackByItem" (click)="viewProduct(item?.product)">
                 <div class="item-image">
                   <img [src]="item?.product?.mainImage" [alt]="item?.product?.name" />
                 </div>

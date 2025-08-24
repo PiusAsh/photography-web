@@ -30,4 +30,18 @@ scroll(direction: 'left' | 'right') {
   }
 }
 
+  getPriceRange(product: any): string {
+    const sizes = product?.size || [];
+    const prints = product?.print || [];
+
+    if (sizes.length > 0 && prints.length > 0) {
+      const sizeAmounts = sizes.map((s: { amount: any; }) => s.amount);
+      const printAmounts = prints.map((p: { amount: any; }) => p.amount);
+      const minPrice = Math.min(...sizeAmounts) + Math.min(...printAmounts);
+      const maxPrice = Math.max(...sizeAmounts) + Math.max(...printAmounts);
+      return `₦${minPrice.toLocaleString()} – ₦${maxPrice.toLocaleString()}`;
+    } else {
+      return 'N/A';
+    }
+  }
 }

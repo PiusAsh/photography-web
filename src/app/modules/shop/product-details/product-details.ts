@@ -154,10 +154,12 @@ export class ProductDetails implements OnInit, OnDestroy {
 
   viewProduct(product: Product): void {
     this.router.navigate([`/store/product/${product?.id}`]);
+    // window.scrollTo(0, 0);
   }
 
   goToCart(): void {
     this.router.navigate(['/store/cart']);
+    window.scrollTo(0, 0);
   }
 
   scrollThumbnails(direction: 'left' | 'right'): void {

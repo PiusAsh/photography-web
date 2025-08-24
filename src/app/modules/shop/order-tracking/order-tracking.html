@@ -116,13 +116,13 @@
           <div class="order-card" *ngFor="let order of orders">
             <div class="order-header">
               <div class="order-info">
-                <h3 class="order-number">Order #{{ order.orderNumber }}</h3>
+                <h3 class="order-number">Order #{{ order.id }}</h3>
                 <p class="order-date">{{ formatDate(order.orderDate) }}</p>
               </div>
               <div class="order-status">
-                <span class="status-badge" [class]="getOrderStatusClass(order.status)">
-                  <i [class]="getOrderStatusIcon(order.status)"></i>
-                  {{ order.status }}
+                <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
+                  <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
+                  {{ order.orderStatus }}
                 </span>
               </div>
             </div>
@@ -130,7 +130,7 @@
             <div class="order-items">
               <div class="order-item" *ngFor="let item of order.items">
                 <div class="item-image">
-                  <img [src]="item.productImage" [alt]="item.productName" />
+                  <img [src]="item.productImage || 'https://via.placeholder.com/100x100.png?text=No+Image'" [alt]="item.productName" />
                 </div>
                 <div class="item-details">
                   <h4 class="item-name">{{ item.productName }}</h4>

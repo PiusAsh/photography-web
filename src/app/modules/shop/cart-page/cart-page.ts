@@ -27,7 +27,10 @@ export class CartPage implements OnInit {
       this.cartItems = items;
     });
   }
-
+ viewProduct(product: any): void {
+    this.router.navigate([`/store/product/${product?.id}`]);
+    window.scrollTo(0, 0);
+  }
   getCount(): number {
     return this.cartService.getCount();
   }

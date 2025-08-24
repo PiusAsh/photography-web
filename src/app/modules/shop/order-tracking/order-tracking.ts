@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared-module';
 import { Navbar } from '../../../shared/components/navbar/navbar';
 import { Footer } from '../../../shared/components/footer/footer';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface OrderItem {
   productId: string;
@@ -14,25 +15,19 @@ interface OrderItem {
   quantity: number;
   unitPrice: number;
   totalPrice: number;
+  options: any;
 }
 
 interface Order {
-  orderId: string;
-  orderNumber: string;
-  customerEmail: string;
-  orderDate: string;
-  status: string;
-  totalAmount: number;
+  id: string;
+  customer: any;
   items: OrderItem[];
-  shippingAddress?: {
-    fullName: string;
-    address: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    phone: string;
-  };
-  paymentMethod?: string;
+  totalAmount: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  orderDate: string;
+  orderStatus: string;
+  secretCode: string;
 }
 
 @Component({
@@ -52,7 +47,9 @@ export class OrderTrackingComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.trackingForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -61,17 +58,15 @@ export class OrderTrackingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check if user is already authenticated (e.g., from localStorage)
-    const savedEmail = localStorage.getItem('tracking_email');
-    const savedSecretCode = localStorage.getItem('tracking_secret_code');
-    
-    if (savedEmail && savedSecretCode) {
-      this.trackingForm.patchValue({
-        email: savedEmail,
-        secretCode: savedSecretCode
-      });
-      this.trackOrders();
-    }
+    this.route.queryParams.subscribe(params => {
+      const email = params['email'];
+      const code = params['code'];
+
+      if (email && code) {
+        this.trackingForm.patchValue({ email: email, secretCode: code });
+        this.trackOrders();
+      }
+    });
   }
 
   get f() {
@@ -88,30 +83,22 @@ export class OrderTrackingComponent implements OnInit {
 
     const { email, secretCode } = this.trackingForm.value;
 
-    // Save credentials for future use
-    localStorage.setItem('tracking_email', email);
-    localStorage.setItem('tracking_secret_code', secretCode);
-
-    // API call to track orders
-    this.http.post<{ success: boolean; orders?: Order[]; message?: string }>(
-      `${environment.BASE_URL}Order/track`,
-      { email, secretCode }
+    this.http.get<any>(
+      `${environment.BASE_URL}Order/track?email=${email}&secretCode=${secretCode}`
     ).subscribe({
       next: (response) => {
         this.isLoading = false;
-        
-        if (response.success && response.orders) {
-          this.orders = response.orders;
+        if (response.status) {
+          this.orders = response.data;
           this.customerEmail = email;
           this.isAuthenticated = true;
         } else {
-          this.errorMessage = response.message || 'No orders found for the provided credentials.';
+          this.errorMessage = response.errorMessage || 'No orders found for the provided credentials.';
         }
       },
       error: (error) => {
         this.isLoading = false;
         console.error('Error tracking orders:', error);
-        
         if (error.status === 404) {
           this.errorMessage = 'No orders found for the provided credentials.';
         } else if (error.status === 401) {
@@ -129,10 +116,7 @@ export class OrderTrackingComponent implements OnInit {
     this.customerEmail = '';
     this.errorMessage = '';
     this.trackingForm.reset();
-    
-    // Clear saved credentials
-    localStorage.removeItem('tracking_email');
-    localStorage.removeItem('tracking_secret_code');
+    this.router.navigate(['/store/order-tracking']);
   }
 
   formatDate(dateString: string): string {
@@ -175,18 +159,15 @@ export class OrderTrackingComponent implements OnInit {
   }
 
   viewOrderDetails(order: Order): void {
-    // This could open a modal or navigate to a detailed view
     console.log('Viewing order details:', order);
-    
-    // For now, we'll just show an alert with basic info
     const details = `
-Order #${order.orderNumber}
+Order #${order.id}
 Date: ${this.formatDate(order.orderDate)}
-Status: ${order.status}
+Status: ${order.orderStatus}
 Total: ${this.formatPrice(order.totalAmount)}
 Items: ${order.items.length} item(s)
     `;
-    
     alert(details);
   }
-} 
+}
+ 

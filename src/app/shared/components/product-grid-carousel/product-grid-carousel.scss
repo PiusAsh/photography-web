@@ -15,6 +15,8 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .store-card:hover {
@@ -42,8 +44,9 @@
 
 .store-product-name {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 0.25rem;
+  
 }
 .product-scroll-wrapper {
   position: relative;
@@ -61,4 +64,8 @@
 .product-scroll::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
+}
+
+.card-body {
+    flex-grow: 1;
 }
