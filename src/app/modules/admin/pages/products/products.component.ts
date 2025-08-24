@@ -161,11 +161,11 @@ export class ProductsComponent implements OnInit {
           console.log('Product created successfully:', response);
           // Optionally, reset the form or navigate to another page
           this.productForm.reset();
-          this.toast.success('Product created successfully!');
+          setTimeout(() => this.toast.success('Product created successfully!'), 0);
         },
         error => {
           console.error('Error creating product:', error);
-          this.toast.danger('Failed to create product. Please try again.');
+          setTimeout(() => this.toast.danger('Failed to create product. Please try again.'), 0);
         }
       );
     }

@@ -41,10 +41,10 @@ export class CheckoutPage implements OnInit {
     this.cartItems = this.cartService.getCartItems();
 
     this.checkoutForm = this.fb.group({
-      name: ['Pius Ashogbon', Validators.required],
-      email: ['pius1ash@gmail.com', [Validators.required, Validators.email]],
-      phone: ['09052794388', [Validators.required, Validators.pattern(/^0[789][01]\d{8}$/)]],
-      address: ['34, something street, Lagos', Validators.required]
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^0[789][01]\d{8}$/)]],
+      address: ['', Validators.required]
     });
   }
 
