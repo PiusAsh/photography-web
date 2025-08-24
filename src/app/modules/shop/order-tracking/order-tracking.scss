@@ -601,7 +601,7 @@
     font-weight: 600;
     margin-bottom: 1rem;
   }
-  a{
+    a{
     text-decoration: none;
     color: var(--primary-color);
     font-weight: 700;
@@ -630,5 +630,59 @@
         font-size: 1.2rem;
       }
     }
+  }
+}
+
+.order-stats-cards {
+  margin-bottom: 2rem;
+
+  .stat-card {
+    background: white;
+    color: #2c3e50;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 7px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      // transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card-icon {
+      font-size: 2.5rem;
+      opacity: 0.8;
+    }
+
+    .stat-card-info {
+      .stat-card-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #6c757d;
+      }
+
+      .stat-card-value {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .total-orders .stat-card-icon {
+    color: var(--primary-color);
+  }
+
+  .pending-orders .stat-card-icon {
+    color: #f39c12;
+  }
+
+  .successful-orders .stat-card-icon {
+    color: #27ae60;
   }
 }

@@ -100,6 +100,43 @@
           </div>
         </div>
 
+        <!-- Order Stats Cards -->
+        <div class="row order-stats-cards">
+          <div class="col-md-4">
+            <div class="stat-card total-orders">
+              <div class="stat-card-icon">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="stat-card-info">
+                <p class="stat-card-title">Total Orders</p>
+                <p class="stat-card-value">{{ totalOrders }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stat-card pending-orders">
+              <div class="stat-card-icon">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <div class="stat-card-info">
+                <p class="stat-card-title">Pending Orders</p>
+                <p class="stat-card-value">{{ pendingOrders }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="stat-card successful-orders">
+              <div class="stat-card-icon">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <div class="stat-card-info">
+                <p class="stat-card-title">Successful Orders</p>
+                <p class="stat-card-value">{{ successfulOrders }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Orders Table -->
         <div class="orders-list" *ngIf="orders.length > 0">
           <div class="table-responsive">
@@ -116,7 +153,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let order of orders">
+                <tr *ngFor="let order of orders" (click)="viewOrderDetails(order)">
                   <td>{{ order.id }}</td>
                   <td>{{ formatDate(order.orderDate) }}</td>
                   <td>{{ formatPrice(order.totalAmount) }}</td>

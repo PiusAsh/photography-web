@@ -45,6 +45,9 @@ export class OrderTrackingComponent implements OnInit {
   orders: Order[] = [];
   errorMessage = '';
   selectedOrder: Order | null = null;
+  totalOrders = 0;
+  pendingOrders = 0;
+  successfulOrders = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -93,6 +96,7 @@ export class OrderTrackingComponent implements OnInit {
           this.orders = response.data;
           this.customerEmail = email;
           this.isAuthenticated = true;
+          this.calculateOrderStats();
         } else {
           this.errorMessage = response.errorMessage || 'No orders found for the provided credentials.';
         }
@@ -109,6 +113,12 @@ export class OrderTrackingComponent implements OnInit {
         }
       }
     });
+  }
+
+  calculateOrderStats(): void {
+    this.totalOrders = this.orders.length;
+    this.pendingOrders = this.orders.filter(o => o.orderStatus.toLowerCase() === 'pending').length;
+    this.successfulOrders = this.orders.filter(o => o.orderStatus.toLowerCase() === 'delivered').length;
   }
 
   resetTracking(): void {
@@ -149,7 +159,7 @@ export class OrderTrackingComponent implements OnInit {
 
   getOrderStatusIcon(status: string): string {
     const iconMap: { [key: string]: string } = {
-      'pending': '',
+   'pending': '',
       'processing': '',
       'shipped': '',
       'delivered': '',
@@ -162,7 +172,7 @@ export class OrderTrackingComponent implements OnInit {
       // 'cancelled': 'bi bi-x-circle',
       // 'refunded': 'bi bi-arrow-return-left'
     };
-    return iconMap[status.toLowerCase()] ;
+    return iconMap[status.toLowerCase()];
   }
 
   viewOrderDetails(order: Order): void {
@@ -173,4 +183,5 @@ export class OrderTrackingComponent implements OnInit {
     this.selectedOrder = null;
   }
 }
+
  
