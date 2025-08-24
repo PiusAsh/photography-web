@@ -15,7 +15,7 @@
   .text-success, .text-warning{
     font-weight: 500!important;
   }
- .btn-view-details {
+ .btn-view {
   background: #6c757d;
         color: white;
         border: none;
@@ -23,8 +23,7 @@
         border-radius: 8px;
         font-weight: 600;
         font-size: 13px;
-        display: flex;
-        align-items: center;
+       
         
         transition: all 0.3s ease;
         
