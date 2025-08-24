@@ -74,6 +74,7 @@ export class CheckoutPage implements OnInit {
       orderItems: this.cartItems?.map(item => ({
         ProductName: item.product?.name,
         productId: item.product.id,
+        productImage: item.product.mainImage, // Added this line
         quantity: item.quantity,
         unitPrice: item.product.price,
         totalPrice: item.product.price * item.quantity,
@@ -147,6 +148,7 @@ export class CheckoutPage implements OnInit {
       items: this.cartItems.map(item => ({
         productName: item?.product?.name,
         productId: item.product.id,
+        productImage: item.product.mainImage, // Added this line
         quantity: item.quantity,
         unitPrice: item.product.price,
         totalPrice: item.product.price * item.quantity,
