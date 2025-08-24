@@ -147,4 +147,9 @@ isMenuCollapsed = true;
       this.showPortfolioGrid = true;
     }, 10);
   }}
+
+  goTo(){
+    this.route.navigate(["/portfolio"]);
+    window.scrollTo(0, 0);
+  }
 }

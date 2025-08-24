@@ -16,7 +16,7 @@ export class AddPortfolio implements OnInit {
   portfolioForm!: FormGroup;
   imagePreviews: { url: string, file?: File, imageUrl?: string }[] = []; // Added imageUrl for existing images
   isDragOver = false;
-  categories: string[] = ['Weddings', 'Portraits', 'Nature', 'Events', 'Other'];
+  categories: any;
   selectedCategory: string = '';
   isEditMode: boolean = false;
   portfolioItemId: string | null = null;
@@ -34,11 +34,28 @@ export class AddPortfolio implements OnInit {
       images: this.fb.array([])
     });
 
+    this.loadCategories(); // Load categories on init
+
     this.route.paramMap.subscribe(params => {
       this.portfolioItemId = params.get('id');
       if (this.portfolioItemId) {
         this.isEditMode = true;
         this.loadPortfolioItem(this.portfolioItemId);
+      }
+    });
+  }
+
+  loadCategories(): void {
+    this.portfolioService.getAllCategories().subscribe({
+      next: (response) => {
+        if (response.status && response.data) {
+          this.categories = response.data;
+        } else {
+          console.error('Failed to load categories:', response.errorMessage);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching categories:', err);
       }
     });
   }

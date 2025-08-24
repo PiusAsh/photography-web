@@ -29,8 +29,8 @@
             </label>
             <select class="form-input auth-input" [(ngModel)]="selectedCategory" [ngModelOptions]="{standalone: true}">
               <option value="">-- Select a Category --</option>
-              @for (category of categories; track category) {
-                <option [value]="category">{{ category }}</option>
+              @for (category of categories; track category.id) {
+                <option [value]="category.name">{{ category.name }}</option>
               }
             </select>
             @if (!selectedCategory && portfolioForm.touched) {
