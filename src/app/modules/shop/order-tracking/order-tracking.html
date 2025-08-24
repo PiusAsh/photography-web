@@ -94,48 +94,55 @@
           </div>
           <div class="header-right">
             <button class="btn-reset" (click)="resetTracking()">
-              <i class="bi bi-arrow-left"></i>
-              Track Different Orders
+              <i class="bi bi-box-arrow-right"></i>
+              Logout
             </button>
           </div>
         </div>
 
         <!-- Orders Table -->
         <div class="orders-list" *ngIf="orders.length > 0">
-          <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Total Items</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of orders">
+                <td>{{ order.id }}</td>
+                <td>{{ formatDate(order.orderDate) }}</td>
+                <td>{{ formatPrice(order.totalAmount) }}</td>
+                <td>{{ order.items.length }}</td>
+                <td>
+                  <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
+                    <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
+                    {{ order.orderStatus }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-view-details" (click)="viewOrderDetails(order)">
+                    <i class="bi bi-eye"></i>
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <!-- <th>Order ID</th> -->
-                  <th>Date</th>
-                  <th>Total Amount</th>
-                  <th>Total Items</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of orders" (click)="viewOrderDetails(order)">
-                  <!-- <td>{{ order.id }}</td> -->
-                  <td>{{ formatDate(order.orderDate) }}</td>
-                  <td>{{ formatPrice(order.totalAmount) }}</td>
-                  <td>{{ order.items.length }}</td>
-                  <td>
-                    <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
-                      <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
-                      {{ order.orderStatus }}
-                    </span>
-                  </td>
-                  <td>
-                    <button class="btn-view-details" (click)="viewOrderDetails(order)">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="support-section">
+          <h4>Having issues with your order?</h4>
+          <p>If you have a complaint or need help with your order, please contact us:</p>
+          <ul>
+            <li><i class="bi bi-envelope"></i> Email: support&#64;photography.com</li>
+            <li><i class="bi bi-telephone"></i> Phone: +1 (234) 567-890</li>
+          </ul>
         </div>
 
         <!-- Order Details Modal -->
