@@ -1,11 +1,13 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { SharedModule } from '../../../shared/shared-module';
 import { Footer } from "../../../shared/components/footer/footer";
 import { Router } from '@angular/router';
+import { PortfolioService } from '../../admin/pages/add-portfolio/portfolio.service';
+import { AdminRoutingModule } from "../../admin/admin-routing.module";
 
 @Component({
   selector: 'app-home',
-  imports: [SharedModule, Footer],
+  imports: [SharedModule, Footer, AdminRoutingModule],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -46,7 +48,7 @@ export class Home {
   dynamicWord: string = ''; // Holds the current dynamic word for binding
   wordChangeInterval: any; // To store the interval ID for word cycling
 isMenuCollapsed = true;
-  constructor(private route: Router) {}
+  constructor(private route: Router, private portfolioService: PortfolioService, private cdr: ChangeDetectorRef) {}
  gotoPage(pageUrl: string) {
     this.route.navigate([`${pageUrl}`]);
     window.scrollTo(0, 0);
@@ -69,6 +71,7 @@ isMenuCollapsed = true;
         (this.currentWordIndex + 1) % this.dynamicWords.length;
       this.dynamicWord = this.dynamicWords[this.currentWordIndex];
     }, 3000); // Change word every 3 seconds
+    this.loadCategories()
   }
 
   // Clear intervals when the component is destroyed to prevent memory leaks
@@ -88,57 +91,60 @@ isMenuCollapsed = true;
     this.isScrolled = window.scrollY > 50;
   }
 
-   categories: string[] = ['Wedding', 'Beauty', 'Fashion & Lifestyle', 'Corporate Portrait'];
-  selectedCategory: string = 'Wedding'; // Default selected tab for portfolio
+   categories: any[] = [];
+  selectedCategory: string = 'All'; // Default selected tab for portfolio
 
-  portfolioItems: any[] = [
-    // Wedding Category
-    { imageUrl: '/images/slide10.JPEG.jpg', description: 'Joyful wedding moment, captured with love.', category: 'Wedding' },
-    { imageUrl: '/images/slide3.JPEG.jpg', description: 'Bride walking down the aisle, anticipation in her eyes.', category: 'Wedding' },
-    { imageUrl: '/images/slide4.JPEG.jpg', description: 'First dance under soft lights.', category: 'Wedding' },
-    { imageUrl: '/images/slide6.JPEG.jpg', description: 'Groom awaiting his bride.', category: 'Wedding' },
-    { imageUrl: '/images/slide7.JPEG.jpg', description: 'Emotional vows exchanged.', category: 'Wedding' },
-    { imageUrl: '/images/slide8.JPEG.jpg', description: 'Wedding rings close-up.', category: 'Wedding' },
-    { imageUrl: '/images/slide9.JPEG.jpg', description: 'Elegant reception decor.', category: 'Wedding' },
-    // Beauty Category
-    { imageUrl: '/images/slide10.JPEG.jpg', description: 'Stunning portrait highlighting natural beauty.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1063/600/400](https://picsum.photos/id/1063/600/400)', description: 'Glamorous shot with striking makeup.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1064/600/400](https://picsum.photos/id/1064/600/400)', description: 'Soft focus capturing delicate features.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1065/600/400](https://picsum.photos/id/1065/600/400)', description: 'Artistic use of light in a beauty shoot.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1066/600/400](https://picsum.photos/id/1066/600/400)', description: 'Expressive eyes in a close-up.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1067/600/400](https://picsum.photos/id/1067/600/400)', description: 'Radiant skin and subtle glow.', category: 'Beauty' },
-    { imageUrl: '[https://picsum.photos/id/1068/600/400](https://picsum.photos/id/1068/600/400)', description: 'Bold and vibrant beauty editorial.', category: 'Beauty' },
-    // Fashion & Lifestyle Category
-    { imageUrl: '[https://picsum.photos/id/1069/600/400](https://picsum.photos/id/1069/600/400)', description: 'Urban fashion street style.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1070/600/400](https://picsum.photos/id/1070/600/400)', description: 'Relaxed lifestyle shot outdoors.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1071/600/400](https://picsum.photos/id/1071/600/400)', description: 'High fashion editorial pose.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1072/600/400](https://picsum.photos/id/1072/600/400)', description: 'Candid moment capturing everyday life.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1073/600/400](https://picsum.photos/id/1073/600/400)', description: 'Elegant evening wear in a unique setting.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1074/600/400](https://picsum.photos/id/1074/600/400)', description: 'Sporty look with dynamic background.', category: 'Fashion & Lifestyle' },
-    { imageUrl: '[https://picsum.photos/id/1075/600/400](https://picsum.photos/id/1075/600/400)', description: 'Bohemian style, free spirit.', category: 'Fashion & Lifestyle' },
-    // Corporate Portrait Category
-    { imageUrl: '[https://picsum.photos/id/1076/600/400](https://picsum.photos/id/1076/600/400)', description: 'Professional headshot for corporate profile.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1077/600/400](https://picsum.photos/id/1077/600/400)', description: 'Executive portrait conveying confidence.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1078/600/400](https://picsum.photos/id/1078/600/400)', description: 'Team leader in a modern office environment.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1079/600/400](https://picsum.photos/id/1079/600/400)', description: 'Thoughtful gaze, perfect for a professional biography.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1080/600/400](https://picsum.photos/id/1080/600/400)', description: 'Client-facing professional, approachable and competent.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1081/600/400](https://picsum.photos/id/1081/600/400)', description: 'Formal business portrait with clean backdrop.', category: 'Corporate Portrait' },
-    { imageUrl: '[https://picsum.photos/id/1082/600/400](https://picsum.photos/id/1082/600/400)', description: 'Dynamic pose for a startup founder.', category: 'Corporate Portrait' },
-  ];
- // Portfolio methods
-  // Portfolio methods
-  get filteredPortfolioItems(): any[] {
-    return this.portfolioItems.filter(item => item.category === this.selectedCategory);
+  allPortfolioItems: any[] = []; // Store all fetched portfolio items
+  filteredPortfolioItems: any[] = []; // Filtered items based on selected category
+  showPortfolioGrid: boolean = true;
+
+  loadCategories(): void {
+    this.portfolioService.getAllCategories().subscribe({
+      next: (response) => {
+        if (response.status && response.data) {
+          // Add an "All" category at the beginning
+          this.categories = [{ id: 0, name: 'All', description: '', status: '', dateCreated: '' }, ...response.data];
+
+          this.loadPortfolioItems(this.selectedCategory === 'All' ? '' : this.selectedCategory);
+                    this.selectedCategory = 'All'; // Select "All" by default
+          this.cdr.detectChanges();
+        } else {
+          console.error('Failed to load categories:', response.errorMessage);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching categories:', err);
+      }
+    });
   }
-showPortfolioGrid: boolean = true;
-  selectCategory(category: string): void {
-    if (this.selectedCategory !== category) {
-      this.selectedCategory = category;
-      // Temporarily hide and show the grid to re-trigger CSS animations
-      this.showPortfolioGrid = false;
-      setTimeout(() => {
-        this.showPortfolioGrid = true;
-      }, 10); // A small delay is enough to trigger reflow and animation
-    }
+
+  loadPortfolioItems(searchTerm: string = ''): void {
+    // Fetch all portfolio items (adjust pageNumber and pageSize as needed)
+    this.portfolioService.getPortfolioItems(1, 8, searchTerm).subscribe({
+      next: (response) => {
+        if (response.status && response.data && response.data.items) {
+          this.allPortfolioItems = response.data.items;
+          this.filteredPortfolioItems = this.allPortfolioItems; // Update filtered items after loading
+        } else {
+          console.error('Failed to load portfolio items:', response.errorMessage);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching portfolio items:', err);
+      }
+    });
   }
+
+
+ selectCategory(categoryName: string): void {
+  if (this.selectedCategory !== categoryName) {
+    this.selectedCategory = categoryName;
+    this.showPortfolioGrid = false; 
+
+    setTimeout(() => {
+      const searchTerm = categoryName === 'All' ? '' : categoryName;
+      this.loadPortfolioItems(searchTerm);
+      this.showPortfolioGrid = true;
+    }, 10);
+  }}
 }

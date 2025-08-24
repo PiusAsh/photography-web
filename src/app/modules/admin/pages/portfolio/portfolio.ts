@@ -27,7 +27,7 @@ export class PortfolioComponent implements OnInit {
   }
 
   getPortfolioItems(): void {
-    this.portfolioService.getPortfolioItems(this.pageNumber, this.pageSize).subscribe({
+    this.portfolioService.getPortfolioItems(this.pageNumber, this.pageSize, '').subscribe({
       next: (response) => {
         if (response.status) {
           this.portfolioItems = response.data.items;

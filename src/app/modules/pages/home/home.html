@@ -183,27 +183,25 @@
       <li class="nav-item" *ngFor="let cat of categories">
         <button
           class="nav-link"
-          [class.active]="selectedCategory === cat"
-          (click)="selectCategory(cat)"
+          [class.active]="selectedCategory === cat?.name"
+          (click)="selectCategory(cat?.name)"
         >
-          {{ cat }}
+          {{ cat?.name }}
         </button>
       </li>
     </ul>
 
     <!-- Use *ngIf to trigger re-render and animation on tab switch -->
     <div *ngIf="showPortfolioGrid" class="portfolio-grid">
-      <div *ngFor="let item of filteredPortfolioItems; let i = index" class="portfolio-item"
+      <div *ngFor="let item of allPortfolioItems; let i = index" class="portfolio-item"
            [style.animation-delay.ms]="i * 70"> <!-- Staggered animation delay -->
-        <img [src]="item.imageUrl" [alt]="item.description" class="portfolio-image">
-        <div class="portfolio-overlay">
-          <p class="portfolio-description">{{ item.description }}</p>
-        </div>
+        <img [src]="item.imageUrl" [alt]="item?.name" class="portfolio-image">
+        
       </div>
     </div>
 <div class="d-flex justify-content-center mt-5">
 
-  <button class="btn-primary mx-auto" style="font-style: italic!important;">View All</button>
+  <button class="btn-primary mx-auto" routerLink="/portfolio" style="font-style: italic!important;">View All</button>
 </div>
   </div>
 </section>

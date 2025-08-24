@@ -371,9 +371,12 @@ border-top: 2px solid #333;
 }
 
 .portfolio-item:hover {
-  transform: scale(1.02); /* Slight zoom on hover */
   z-index: 1; /* Bring hovered item to front */
   box-shadow: none; /* No box-shadow on hover as requested */
+}
+
+.portfolio-item:hover .portfolio-image {
+  transform: scale(1.05); /* Zoom in the image on hover */
 }
 
 .portfolio-image {

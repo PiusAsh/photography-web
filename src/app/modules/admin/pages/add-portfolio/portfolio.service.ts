@@ -23,8 +23,8 @@ export class PortfolioService {
     return this.http.post(this.apiUrl, portfolioData);
   }
 
-  getPortfolioItems(pageNumber: number, pageSize: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}?PageNumber=${pageNumber}&PageSize=${pageSize}`);
+  getPortfolioItems(pageNumber: number, pageSize: number, searchTerm?: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?PageNumber=${pageNumber}&PageSize=${pageSize}&searchTerm=${searchTerm}`);
   }
 
   deletePortfolioItem(id: string): Observable<any> {
@@ -33,6 +33,9 @@ export class PortfolioService {
 
   getPortfolioItem(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+  getAllCategories(): Observable<any> {
+    return this.http.get<any>(`${environment.BASE_URL}Categories`);
   }
 
   updatePortfolioItem(id: string, portfolioData: any): Observable<any> {

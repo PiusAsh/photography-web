@@ -1,0 +1,154 @@
+/* Portfolio Section Styling */
+.portfolio-section {
+  // background-color: #262627fb; /* Using CSS variable */
+  background-color: lightgray;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  // color: white; /* Text color for portfolio section */
+}
+
+.section-heading {
+  font-size: 2.4rem; /* Adjusted font size */
+  font-weight: 700;
+  font-style: italic;
+  color: #333; /* White heading text */
+  margin-bottom: 3rem;
+  margin-top: 6rem;
+}
+
+/* Portfolio Tabs (Nav-pills) */
+.portfolio-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Lighter line for dark background */
+  padding-bottom: 0.5rem;
+ 
+}
+
+.portfolio-tabs .nav-item {
+  margin: 0 .4rem;
+}
+
+.portfolio-tabs .nav-link {
+  color: #333; /* White text for tabs */
+  font-weight: 600;
+  padding: 0.40rem 0.9rem;
+  border-radius: 0;
+  transition: all 0.3s ease-in-out;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+   font-style: italic;
+}
+
+.portfolio-tabs .nav-link:hover {
+  color: #333 /* Using CSS variable */
+
+}
+
+.portfolio-tabs .nav-link.active {
+  background-color: transparent;
+  color: #fff; /* Using CSS variable  */
+  border-color: transparent;
+  padding: 0.40rem 0.9rem;
+  background-color: var(--primary-color); /* Show bottom border for active tab */
+  box-shadow: none;
+  // font-size: 40px!important;
+  font-weight: 700!important;
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+  display: grid; /* Use grid for more precise column control */
+  grid-template-columns: repeat(auto-fill, minmax(322px, 1fr)); /* Auto-fill with 322px items, flexible to fill row */
+  gap: 1px; /* This creates the 1px line between items */
+  // background-color: rgba(255, 255, 255, 0.1); /* This color shows in the gaps as the border */
+  padding-top: 1rem;
+  /* Removed explicit border-left/border-top as gaps handle it */
+border-top: 2px solid #333;
+  /* Animation for the grid itself, applied when showPortfolioGrid becomes true */
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none; /* No box shadow as requested */
+  cursor: pointer;
+  width: 322px; /* Fixed width for desktop */
+  height: 500px; /* Fixed height for desktop */
+  transition: transform 0.3s ease-in-out; /* Keep transform for hover effect */
+
+  /* Initial state for slide-in animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.6s ease-out forwards; /* Apply animation to each item */
+}
+
+.portfolio-item:hover {
+  z-index: 1; /* Bring hovered item to front */
+  box-shadow: none; /* No box-shadow on hover as requested */
+}
+
+.portfolio-item:hover .portfolio-image {
+  transform: scale(1.05); /* Zoom in the image on hover */
+}
+
+.portfolio-image {
+  width: 100%;
+  height: 100%; /* Image fills its 322x500 container */
+  object-fit: cover; /* This will crop images to fill 322x500, ensuring consistent display height/width */
+  display: block;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Animations for portfolio items */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+/* Responsive adjustments for portfolio */
+@media (max-width: 767.98px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+    gap: 1px; /* Keep gap for mobile */
+  }
+  .portfolio-item {
+    width: auto; /* Let grid calculate width for 2 columns */
+    height: 250px; /* Adjusted height for mobile to prevent excessively long items */
+  }
+  .portfolio-image {
+    height: 100%; /* Image fills adjusted item height */
+  }
+  .portfolio-tabs .nav-item {
+    width: 100%; /* Full width tabs on small screens */
+    margin: 0.25rem 0;
+  }
+  .portfolio-tabs .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575.98px) { /* Adjust further for very small screens if needed */
+  .portfolio-grid {
+    /* On very narrow screens, two columns might still be too cramped.
+       You might consider a single column here or reduce image height further. */
+    /* Example: grid-template-columns: 1fr; */
+  }
+  .portfolio-item {
+    /* Example: height: 200px; */
+  }
+}

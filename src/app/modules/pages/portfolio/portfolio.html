@@ -1,1 +1,44 @@
-<p>portfolio works!</p>
+
+<app-navbar class="mb-5"></app-navbar>
+<section class="portfolio-section py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 section-heading ">Portfolio</h2>
+
+    <ul class="nav nav-pills justify-content-center portfolio-tabs">
+      <li class="nav-item" *ngFor="let cat of categories">
+        <button
+          class="nav-link"
+          [class.active]="selectedCategory === cat.name"
+          (click)="selectCategory(cat.name)"
+        >
+          {{ cat.name }}
+        </button>
+      </li>
+    </ul>
+
+    <div *ngIf="showPortfolioGrid" class="portfolio-grid">
+      <div *ngFor="let item of filteredPortfolioItems; let i = index" class="portfolio-item"
+           [style.animation-delay.ms]="i * 70">
+        <img [src]="item.imageUrl" [alt]="item.description" class="portfolio-image">
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="text-center my-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading more items...</p>
+    </div>
+
+    <div *ngIf="!loading && pageNumber >= totalPages && allPortfolioItems.length > 0" class="text-center my-3">
+      <p>No more items to load.</p>
+    </div>
+
+     <div *ngIf="!loading &&  allPortfolioItems.length === 0" class="text-center my-5">
+      <p>No items available.</p>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>
+
