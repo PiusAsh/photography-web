@@ -8,6 +8,8 @@ import { Footer } from "../../../shared/components/footer/footer";
 import { HttpClient } from '@angular/common/http';
 import { StoreService } from '../_services/store.service'; // Import StoreService
 import { NgToastService } from 'ng-angular-popup';
+import { Router } from '@angular/router';
+import { duration } from 'html2canvas/dist/types/css/property-descriptors/duration';
 
 declare var PaystackPop: any;
 
@@ -32,7 +34,7 @@ export class CheckoutPage implements OnInit {
     private ngZone: NgZone,
     private http: HttpClient,
     private storeService: StoreService, // Inject StoreService
-    private toast: NgToastService
+    private toast: NgToastService, private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -164,6 +166,8 @@ export class CheckoutPage implements OnInit {
         this.toast.success('Order placed successfully!');
         this.cartService.clearCart();
         this.cartItems = []
+        this.router.navigate([`/store/order-tracking`]);
+        window.scrollTo(0, 0);
         this.checkoutForm.reset();
       },
       error: (err) => {

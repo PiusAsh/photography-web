@@ -165,7 +165,7 @@ Checkout
                   
                   <div class="item-price ">
                     <span class="unit-price">{{ item.product.price | currencyFormat }}</span>
-                    <span class="total-price">₦{{ (item.product.price * item.quantity) | currencyFormat}}</span>
+                    <span class="total-price">{{ (item.product.price * item.quantity) | currencyFormat}}</span>
                   </div>
                 </div>
               </div>
@@ -173,7 +173,7 @@ Checkout
                              <div class="summary-breakdown">
                  <div class="breakdown-row">
                    <span>Subtotal</span>
-                   <span>₦{{ getTotal() | currencyFormat }}</span>
+                   <span>{{ getTotal() | currencyFormat }}</span>
                  </div>
                  
                  <div class="breakdown-row">
@@ -185,7 +185,7 @@ Checkout
                  
                  <div class="breakdown-row total-row">
                    <span>Total</span>
-                   <span class="total-amount">₦{{ getTotal() | currencyFormat }}</span>
+                   <span class="total-amount">{{ getTotal() | currencyFormat }}</span>
                  </div>
                </div>
 

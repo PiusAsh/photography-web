@@ -75,7 +75,7 @@ export class CartService {
   clearCart() {
     this.cartSubject.next([]);
     localStorage.removeItem(this.STORAGE_KEY);
-    this.toast.success('Cart cleared.');
+    // this.toast.success('Cart cleared.');
   }
 
   updateQuantity(productId: string, quantity: number, options: { size: any, print: any }) {
