@@ -44,6 +44,7 @@ export class OrderTrackingComponent implements OnInit {
   customerEmail = '';
   orders: Order[] = [];
   errorMessage = '';
+  selectedOrder: Order | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -148,26 +149,28 @@ export class OrderTrackingComponent implements OnInit {
 
   getOrderStatusIcon(status: string): string {
     const iconMap: { [key: string]: string } = {
-      'pending': 'bi bi-clock',
-      'processing': 'bi bi-gear',
-      'shipped': 'bi bi-truck',
-      'delivered': 'bi bi-check-circle',
-      'cancelled': 'bi bi-x-circle',
-      'refunded': 'bi bi-arrow-return-left'
+      'pending': '',
+      'processing': '',
+      'shipped': '',
+      'delivered': '',
+      'cancelled': '',
+      'refunded': ''
+      // 'pending': 'bi bi-clock',
+      // 'processing': 'bi bi-gear',
+      // 'shipped': 'bi bi-truck',
+      // 'delivered': 'bi bi-check-circle',
+      // 'cancelled': 'bi bi-x-circle',
+      // 'refunded': 'bi bi-arrow-return-left'
     };
-    return iconMap[status.toLowerCase()] || 'bi bi-clock';
+    return iconMap[status.toLowerCase()] ;
   }
 
   viewOrderDetails(order: Order): void {
-    console.log('Viewing order details:', order);
-    const details = `
-Order #${order.id}
-Date: ${this.formatDate(order.orderDate)}
-Status: ${order.orderStatus}
-Total: ${this.formatPrice(order.totalAmount)}
-Items: ${order.items.length} item(s)
-    `;
-    alert(details);
+    this.selectedOrder = order;
+  }
+
+  closeModal(): void {
+    this.selectedOrder = null;
   }
 }
  

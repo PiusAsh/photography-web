@@ -1,20 +1,9 @@
 <app-navbar class="mb-3"></app-navbar>
 
-<div class="tracking-container">
+<div class="tracking-container mt-5">
   <!-- Header Section -->
-  <div class="tracking-header">
-    <div class="container">
-      <div class="header-content">
-        <div class="header-left">
-          <h1 class="tracking-title">
-            <i class="bi bi-search"></i>
-            Track Your Orders
-          </h1>
-          <p class="tracking-subtitle">Enter your email and secret code to view your order history</p>
-        </div>
-      </div>
-    </div>
-  </div>
+
+ 
 
   <!-- Main Content -->
   <div class="tracking-main">
@@ -25,9 +14,9 @@
           <div class="auth-header">
             <h3>
               <i class="bi bi-shield-lock"></i>
-              Order Authentication
+              Track Your Orders
             </h3>
-            <p class="auth-subtitle">Please provide your credentials to access your orders</p>
+            <p class="auth-subtitle">Enter your email and code to view your order history</p>
           </div>
 
           <form [formGroup]="trackingForm" (ngSubmit)="trackOrders()" class="auth-form">
@@ -111,50 +100,68 @@
           </div>
         </div>
 
-        <!-- Orders List -->
+        <!-- Orders Table -->
         <div class="orders-list" *ngIf="orders.length > 0">
-          <div class="order-card" *ngFor="let order of orders">
-            <div class="order-header">
-              <div class="order-info">
-                <h3 class="order-number">Order #{{ order.id }}</h3>
-                <p class="order-date">{{ formatDate(order.orderDate) }}</p>
-              </div>
-              <div class="order-status">
-                <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
-                  <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
-                  {{ order.orderStatus }}
-                </span>
-              </div>
-            </div>
+          <div class="table-responsive">
 
-            <div class="order-items">
-              <div class="order-item" *ngFor="let item of order.items">
-                <div class="item-image">
-                  <img [src]="item.productImage || 'https://via.placeholder.com/100x100.png?text=No+Image'" [alt]="item.productName" />
-                </div>
-                <div class="item-details">
-                  <h4 class="item-name">{{ item.productName }}</h4>
-                  <div class="item-meta">
-                    <span class="item-quantity">Qty: {{ item.quantity }}</span>
-                    <span class="item-price">₦{{ item.unitPrice.toLocaleString() }} each</span>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <!-- <th>Order ID</th> -->
+                  <th>Date</th>
+                  <th>Total Amount</th>
+                  <th>Total Items</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders" (click)="viewOrderDetails(order)">
+                  <!-- <td>{{ order.id }}</td> -->
+                  <td>{{ formatDate(order.orderDate) }}</td>
+                  <td>{{ formatPrice(order.totalAmount) }}</td>
+                  <td>{{ order.items.length }}</td>
+                  <td>
+                    <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
+                      <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
+                      {{ order.orderStatus }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn-view-details" (click)="viewOrderDetails(order)">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div class="modal-overlay" *ngIf="selectedOrder">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Order #{{ selectedOrder.id }}</h3>
+              <button class="btn-close" (click)="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="order-items">
+                <div class="order-item" *ngFor="let item of selectedOrder.items">
+                  <div class="item-image">
+                    <img [src]="item.productImage || 'https://via.placeholder.com/100x100.png?text=No+Image'" [alt]="item.productName" />
+                  </div>
+                  <div class="item-details">
+                    <h4 class="item-name">{{ item.productName }}</h4>
+                    <div class="item-meta">
+                      <span class="item-quantity">Qty: {{ item.quantity }}</span>
+                      <span class="item-price">₦{{ item.unitPrice.toLocaleString() }} each</span>
+                    </div>
+                  </div>
+                  <div class="item-total">
+                    <span class="total-price">₦{{ item.totalPrice.toLocaleString() }}</span>
                   </div>
                 </div>
-                <div class="item-total">
-                  <span class="total-price">₦{{ item.totalPrice.toLocaleString() }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="order-footer">
-              <div class="order-total">
-                <span class="total-label">Total Amount:</span>
-                <span class="total-amount">{{ formatPrice(order.totalAmount) }}</span>
-              </div>
-              <div class="order-actions">
-                <button class="btn-view-details" (click)="viewOrderDetails(order)">
-                  <i class="bi bi-eye"></i>
-                  View Details
-                </button>
               </div>
             </div>
           </div>
