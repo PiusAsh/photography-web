@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ProductService } from '../../../shop/_services/product.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-products',
@@ -17,7 +18,7 @@ export class ProductsComponent implements OnInit {
   additionalImagePreviewUrls: (string | ArrayBuffer)[] = [];
   productForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private productService: ProductService, private http: HttpClient, private toast: NgToastService) { }
 
   triggerMainFileInputClick(): void {
     this.mainFileInput.nativeElement.click();
@@ -160,11 +161,11 @@ export class ProductsComponent implements OnInit {
           console.log('Product created successfully:', response);
           // Optionally, reset the form or navigate to another page
           this.productForm.reset();
-          alert('Product created successfully!');
+          this.toast.success('Product created successfully!');
         },
         error => {
           console.error('Error creating product:', error);
-          alert('Failed to create product. Please try again.');
+          this.toast.danger('Failed to create product. Please try again.');
         }
       );
     }

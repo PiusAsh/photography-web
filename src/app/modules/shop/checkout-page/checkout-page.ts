@@ -7,6 +7,7 @@ import { Navbar } from "../../../shared/components/navbar/navbar";
 import { Footer } from "../../../shared/components/footer/footer";
 import { HttpClient } from '@angular/common/http';
 import { StoreService } from '../_services/store.service'; // Import StoreService
+import { NgToastService } from 'ng-angular-popup';
 
 declare var PaystackPop: any;
 
@@ -30,7 +31,8 @@ export class CheckoutPage implements OnInit {
     private cartService: CartService,
     private ngZone: NgZone,
     private http: HttpClient,
-    private storeService: StoreService // Inject StoreService
+    private storeService: StoreService, // Inject StoreService
+    private toast: NgToastService
   ) {}
 
   ngOnInit(): void {
@@ -104,19 +106,19 @@ export class CheckoutPage implements OnInit {
                   error: (updateErr) => {
                     console.error('Error updating payment status:', updateErr);
                     this.isProcessing = false;
-                    alert('Payment successful, but there was an error updating status. Please contact support.');
+                    this.toast.danger('Payment successful, but there was an error updating status. Please contact support.');
                   }
                 });
               } else {
                 this.isProcessing = false;
-                alert('Payment was not successful. Please try again.');
+                this.toast.danger('Payment was not successful. Please try again.');
               }
             });
           },
           onClose: () => {
             this.ngZone.run(() => {
               this.isProcessing = false;
-              alert('Transaction was not completed, window closed.');
+              this.toast.info('Transaction was not completed, window closed.');
             });
           },
         });
@@ -125,7 +127,7 @@ export class CheckoutPage implements OnInit {
       error: (logErr) => {
         console.error('Error logging pending payment:', logErr);
         this.isProcessing = false;
-        alert('There was an error preparing your payment. Please try again.');
+        this.toast.danger('There was an error preparing your payment. Please try again.');
       }
     });
   }
@@ -159,7 +161,7 @@ export class CheckoutPage implements OnInit {
     this.storeService.checkout(orderPayload).subscribe({
       next: (res) => {
         this.isProcessing = false;
-        alert('Order placed successfully!');
+        this.toast.success('Order placed successfully!');
         this.cartService.clearCart();
         this.cartItems = []
         this.checkoutForm.reset();
@@ -167,7 +169,7 @@ export class CheckoutPage implements OnInit {
       error: (err) => {
         console.error('Error sending order to backend:', err);
         this.isProcessing = false;
-        alert('There was an error placing your order. Please contact support.');
+        this.toast.danger('There was an error placing your order. Please contact support.');
       }
     });
   }

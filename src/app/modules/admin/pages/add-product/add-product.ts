@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ProductService } from '../../../shop/_services/product.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-add-product',
@@ -19,7 +20,7 @@ export class AddProduct implements OnInit {
   productForm!: FormGroup;
   isDragOver = false;
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private productService: ProductService, private http: HttpClient, private toast: NgToastService) { }
 
   triggerMainFileInputClick(): void {
     this.mainFileInput.nativeElement.click();
@@ -175,7 +176,7 @@ export class AddProduct implements OnInit {
   private handleFileUpload(file: File, type: 'main' | 'additional'): void {
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please upload only image files.');
+      this.toast.danger('Please upload only image files.');
       return;
     }
 
@@ -235,11 +236,11 @@ export class AddProduct implements OnInit {
           console.log('Product created successfully:', response);
           // Optionally, reset the form or navigate to another page
           // this.productForm.reset();
-          // alert('Product created successfully!');
+          this.toast.success('Product created successfully!');
         },
         error => {
           console.error('Error creating product:', error);
-          alert('Failed to create product. Please try again.');
+          this.toast.danger('Failed to create product. Please try again.',);
         }
       );
     }

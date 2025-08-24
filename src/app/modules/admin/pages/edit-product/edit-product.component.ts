@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../shop/_services/product.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-edit-product',
@@ -28,7 +29,8 @@ export class EditProductComponent implements OnInit {
     private productService: ProductService, 
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toast: NgToastService
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +67,7 @@ export class EditProductComponent implements OnInit {
           error => {
             console.error('Error loading product:', error);
             this.loading = false;
-            alert('Failed to load product. Please try again.');
+            this.toast.danger('Failed to load product. Please try again.');
             this.router.navigate(['/app/all-products']);
           }
         );
@@ -275,7 +277,7 @@ export class EditProductComponent implements OnInit {
 
   private handleFileUpload(file: File, type: 'main' | 'additional'): void {
     if (!file.type.startsWith('image/')) {
-      alert('Please upload only image files.');
+      this.toast.danger('Please upload only image files.');
       return;
     }
 
@@ -334,13 +336,13 @@ export class EditProductComponent implements OnInit {
         response => {
           console.log('Product updated successfully:', response);
           this.loading = false;
-          alert('Product updated successfully!');
+          this.toast.success('Product updated successfully!');
           this.router.navigate(['/app/all-products']);
         },
         error => {
           console.error('Error updating product:', error);
           this.loading = false;
-          alert('Failed to update product. Please try again.');
+          this.toast.danger('Failed to update product. Please try again.');
         }
       );
     }
