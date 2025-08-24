@@ -9,228 +9,262 @@
   <div class="tracking-main">
     <div class="container">
       <!-- Authentication Form -->
-      <div class="auth-section" *ngIf="!isAuthenticated">
-        <div class="auth-card">
-          <div class="auth-header">
-            <h3>
-              <i class="bi bi-shield-lock"></i>
-              Track Your Orders
-            </h3>
-            <p class="auth-subtitle">Enter your email and code to view your order history</p>
-          </div>
-
-          <form [formGroup]="trackingForm" (ngSubmit)="trackOrders()" class="auth-form">
-            <div class="form-group">
-              <label class="form-label">
-                <i class="bi bi-envelope"></i>
-                Email Address
-              </label>
-              <input 
-                type="email" 
-                class="form-control" 
-                formControlName="email"
-                placeholder="Enter your email address"
-              />
-              <div class="error-message" *ngIf="f['email'].touched && f['email'].invalid">
-                <i class="bi bi-exclamation-circle"></i>
-                <span *ngIf="f['email'].errors?.['required']">Email is required</span>
-                <span *ngIf="f['email'].errors?.['email']">Please enter a valid email</span>
-              </div>
+      @if (!isAuthenticated) {
+<div class="row">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-6">
+  <div class="auth-section">
+          <div class="auth-card">
+            <div class="auth-header">
+              <h3>
+                <i class="bi bi-shield-lock"></i>
+                Track Your Orders
+              </h3>
+              <p class="auth-subtitle">Enter your email and code to view your order history</p>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">
-                <i class="bi bi-key"></i>
-                Secret Code
-              </label>
-              <input 
-                type="password" 
-                class="form-control" 
-                formControlName="secretCode"
-                placeholder="Enter your secret code"
-              />
-              <div class="error-message" *ngIf="f['secretCode'].touched && f['secretCode'].invalid">
-                <i class="bi bi-exclamation-circle"></i>
-                <span *ngIf="f['secretCode'].errors?.['required']">Secret code is required</span>
-                <span *ngIf="f['secretCode'].errors?.['minlength']">Secret code must be at least 6 characters</span>
-              </div>
-            </div>
-
-            <div class="form-actions">
-              <button 
-                class="btn-track-orders" 
-                type="submit" 
-                [disabled]="trackingForm.invalid || isLoading"
-              >
-                <i class="bi bi-search" *ngIf="!isLoading"></i>
-                <i class="bi bi-arrow-clockwise" *ngIf="isLoading"></i>
-                <span *ngIf="!isLoading">Track Orders</span>
-                <span *ngIf="isLoading">Loading...</span>
-              </button>
-            </div>
-          </form>
-
-          <div class="auth-info">
-            <div class="info-card">
-              <i class="bi bi-info-circle"></i>
-              <div class="info-content">
-                <h4>How to get your secret code?</h4>
-                <p>Your secret code is sent to your email when you place an order. Check your inbox or spam folder for the order confirmation email.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Orders Display -->
-      <div class="orders-section" *ngIf="isAuthenticated">
-        <div class="orders-header">
-          <div class="header-left">
-            <h2>
-              <i class="bi bi-box"></i>
-              Your Orders
-            </h2>
-            <p class="customer-email">Orders for: {{ customerEmail }}</p>
-          </div>
-          <div class="header-right">
-            <button class="btn-reset" (click)="resetTracking()">
-              <i class="bi bi-box-arrow-right"></i>
-              Logout
-            </button>
-          </div>
-        </div>
-
-        <!-- Order Stats Cards -->
-        <div class="row order-stats-cards">
-          <div class="col-md-4">
-            <div class="stat-card total-orders">
-              <div class="stat-card-icon">
-                <i class="bi bi-box-seam"></i>
-              </div>
-              <div class="stat-card-info">
-                <p class="stat-card-title">Total Orders</p>
-                <p class="stat-card-value">{{ totalOrders }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="stat-card pending-orders">
-              <div class="stat-card-icon">
-                <i class="bi bi-clock-history"></i>
-              </div>
-              <div class="stat-card-info">
-                <p class="stat-card-title">Pending Orders</p>
-                <p class="stat-card-value">{{ pendingOrders }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="stat-card successful-orders">
-              <div class="stat-card-icon">
-                <i class="bi bi-check-circle"></i>
-              </div>
-              <div class="stat-card-info">
-                <p class="stat-card-title">Successful Orders</p>
-                <p class="stat-card-value">{{ successfulOrders }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Orders Table -->
-        <div class="orders-list" *ngIf="orders.length > 0">
-          <div class="table-responsive">
-
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Date</th>
-                  <th>Total Amount</th>
-                  <th>Total Items</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of orders" (click)="viewOrderDetails(order)">
-                  <td>{{ order.id }}</td>
-                  <td>{{ formatDate(order.orderDate) }}</td>
-                  <td>{{ formatPrice(order.totalAmount) }}</td>
-                  <td>{{ order.items.length }}</td>
-                  <td>
-                    <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
-                      <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
-                      {{ order.orderStatus }}
-                    </span>
-                  </td>
-                  <td>
-                    <button class="btn-view-details" (click)="viewOrderDetails(order)">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="support-section">
-          <h4>Having issues with your order?</h4>
-          <p>If you have a complaint or need help with your order, please contact us:</p>
-          <ul>
-            <li><i class="bi bi-envelope"></i> Email: <a href="mailto:support@photography.com">support&#64;photography.com</a></li>
-            <li><i class="bi bi-telephone"></i> Phone: <a href="tel:+1234567890">+1 (234) 567-890</a></li>
-            <li><i class="bi bi-whatsapp"></i> WhatsApp: <a href="https://wa.me/1234567890" target="_blank">+1 (234) 567-890</a></li>
-          </ul>
-        </div>
-
-        <!-- Order Details Modal -->
-        <div class="modal-overlay" *ngIf="selectedOrder">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3>Order #{{ selectedOrder.id }}</h3>
-              <button class="btn-close" (click)="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-              <div class="order-items">
-                <div class="order-item" *ngFor="let item of selectedOrder.items">
-                  <div class="item-image">
-                    <img [src]="item.productImage || 'https://via.placeholder.com/100x100.png?text=No+Image'" [alt]="item.productName" />
+            <form [formGroup]="trackingForm" (ngSubmit)="trackOrders()" class="auth-form">
+              <div class="form-group">
+                <label class="form-label">
+                  <i class="bi bi-envelope"></i>
+                  Email Address
+                </label>
+                <input 
+                  type="email" 
+                  class="form-control auth-input" 
+                  formControlName="email"
+                  placeholder="Enter your email address"
+                />
+                @if (f['email'].touched && f['email'].invalid) {
+                  <div class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    @if (f['email'].errors?.['required']) {
+                      <span>Email is required</span>
+                    }
+                    @if (f['email'].errors?.['email']) {
+                      <span>Please enter a valid email</span>
+                    }
                   </div>
-                  <div class="item-details">
-                    <h4 class="item-name">{{ item.productName }}</h4>
-                    <div class="item-meta">
-                      <span class="item-quantity">Qty: {{ item.quantity }}</span>
-                      <span class="item-price">₦{{ item.unitPrice.toLocaleString() }} each</span>
-                    </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  <i class="bi bi-key"></i>
+                  Secret Code
+                </label>
+                <input 
+                  type="password" 
+                  class="form-control auth-input" 
+                  formControlName="secretCode"
+                  placeholder="Enter your secret code"
+                />
+                @if (f['secretCode'].touched && f['secretCode'].invalid) {
+                  <div class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    @if (f['secretCode'].errors?.['required']) {
+                      <span>Secret code is required</span>
+                    }
+                    @if (f['secretCode'].errors?.['minlength']) {
+                      <span>Secret code must be at least 6 characters</span>
+                    }
                   </div>
-                  <div class="item-total">
-                    <span class="total-price">₦{{ item.totalPrice.toLocaleString() }}</span>
-                  </div>
+                }
+              </div>
+
+              <div class="form-actions">
+                <button 
+                  class="btn-track-orders" 
+                  type="submit" 
+                  [disabled]="trackingForm.invalid || isLoading"
+                >
+                  @if (!isLoading) {
+                    <i class="bi bi-search"></i>
+                    <span>Track Orders</span>
+                  } @else {
+                    <i class="bi bi-arrow-clockwise"></i>
+                    <span>Loading...</span>
+                  }
+                </button>
+              </div>
+            </form>
+
+            <div class="auth-info">
+              <div class="info-card">
+                <i class="bi bi-info-circle"></i>
+                <div class="info-content">
+                  <h4>How to get your secret code?</h4>
+                  <p>Your secret code is sent to your email when you place an order. Check your inbox or spam folder for the order confirmation email.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+  </div>
+  <div class="col-lg-3"></div>
+</div>
 
-        <!-- Empty Orders -->
-        <div class="empty-orders" *ngIf="orders.length === 0">
-          <div class="empty-content">
-            <div class="empty-icon">
-              <i class="bi bi-box"></i>
+      
+      }
+
+      <!-- Orders Display -->
+      @if (isAuthenticated) {
+        <div class="orders-section">
+          <div class="orders-header">
+            <div class="header-left">
+              <h2>
+                <i class="bi bi-box"></i>
+                Your Orders
+              </h2>
+              <p class="customer-email">Orders for: {{ customerEmail }}</p>
             </div>
-            <h3>No Orders Found</h3>
-            <p>No orders found for the provided credentials. Please check your email and secret code.</p>
-            <button class="btn-try-again" (click)="resetTracking()">
-              <i class="bi bi-arrow-clockwise"></i>
-              Try Again
-            </button>
+            <div class="header-right">
+              <button class="btn-reset" (click)="resetTracking()">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+              </button>
+            </div>
           </div>
+
+          <!-- Order Stats Cards -->
+          <div class="row order-stats-cards">
+            <div class="col-md-4">
+              <div class="stat-card total-orders">
+                <div class="stat-card-icon">
+                  <i class="bi bi-box-seam"></i>
+                </div>
+                <div class="stat-card-info">
+                  <p class="stat-card-title">Total Orders</p>
+                  <p class="stat-card-value">{{ totalOrders }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card pending-orders">
+                <div class="stat-card-icon">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="stat-card-info">
+                  <p class="stat-card-title">Pending Orders</p>
+                  <p class="stat-card-value">{{ pendingOrders }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card successful-orders">
+                <div class="stat-card-icon">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="stat-card-info">
+                  <p class="stat-card-title">Successful Orders</p>
+                  <p class="stat-card-value">{{ successfulOrders }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          @if (orders.length > 0) {
+            <div class="orders-list">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Date</th>
+                      <th>Total Amount</th>
+                      <th>Total Items</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (order of orders; track order.id) {
+                      <tr (click)="viewOrderDetails(order)">
+                        <td>{{ order.id }}</td>
+                        <td>{{ formatDate(order.orderDate) }}</td>
+                        <td>{{ order.totalAmount  | currencyFormat }}</td>
+                        <td>{{ order.items.length }}</td>
+                        <td>
+                          <span class="status-badge" [class]="getOrderStatusClass(order.orderStatus)">
+                            <i [class]="getOrderStatusIcon(order.orderStatus)"></i>
+                            {{ order.orderStatus }}
+                          </span>
+                        </td>
+                        <td>
+                          <button class="btn-view-details" (click)="viewOrderDetails(order)">
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          } @else {
+            <!-- Empty Orders -->
+            <div class="empty-orders">
+              <div class="empty-content">
+                <div class="empty-icon">
+                  <i class="bi bi-box"></i>
+                </div>
+                <h3>No Orders Found</h3>
+                <p>No orders found for the provided credentials. Please check your email and secret code.</p>
+                <button class="btn-try-again" (click)="resetTracking()">
+                  <i class="bi bi-arrow-clockwise"></i>
+                  Try Again
+                </button>
+              </div>
+            </div>
+          }
+
+          <div class="support-section">
+            <h4>Having issues with your order?</h4>
+            <p>If you have a complaint or need help with your order, please contact us:</p>
+            <ul>
+              <li><i class="bi bi-envelope"></i> Email: <a href="mailto:support@photography.com">info&#64;bennyhosea.com</a></li>
+              <li><i class="bi bi-telephone"></i> Phone: <a href="tel:+2348186707524">08186707524</a></li>
+              <li><i class="bi bi-whatsapp"></i> WhatsApp: <a href="https://wa.me/2348186707524" target="_blank">+2348186707524</a></li>
+            </ul>
+          </div>
+
+          <!-- Order Details Modal -->
+          @if (selectedOrder) {
+            <div class="modal-overlay">
+              <div class="modal-content">
+                <div class="modal-header" >
+                  <h3 title="Click to Close" style="font-size: 18px!important;">Order #{{ selectedOrder.id }}</h3>
+                  <p class="btn btn-close" (click)="closeModal()">&times;</p>
+                </div>
+                <div class="modal-body">
+                  <div class="order-items">
+                    @for (item of selectedOrder.items; track item.productId) {
+                      <div class="order-item">
+                        <div class="item-image">
+                          <img [src]="item.productImage || 'https://via.placeholder.com/100x100.png?text=No+Image'" [alt]="item.productName" />
+                        </div>
+                        <div class="item-details">
+                          <h4 class="item-name">{{ item.productName }}</h4>
+                          <div class="item-meta">
+                            <span class="item-quantity">Qty: {{ item.quantity }}</span>
+                            <span class="item-price">{{ item.unitPrice  | currencyFormat }} each</span>
+                          </div>
+                        </div>
+                        <div class="item-total">
+                          <span class="total-price">{{ item.totalPrice | currencyFormat }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
 
-<app-footer></app-footer> 
+<app-footer></app-footer>
