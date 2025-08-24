@@ -1,0 +1,83 @@
+
+/* Footer Specific Styles */
+.footer {
+  background-color: #222; /* Dark background for footer */
+  color: #f8f8f8; /* Light text color */
+}
+
+.footer-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #ffe066; /* Match dynamic word color or choose a complementary one */
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.footer-links {
+  padding-left: 0;
+  list-style: none;
+}
+
+.footer-link {
+  color: #f8f8f8;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 2;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #ffe066; /* Highlight on hover */
+  text-decoration: underline;
+}
+
+.social-icons .social-link {
+  display: inline-flex; /* For better alignment of icon and spacing */
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Fixed width for consistent circle/square shape */
+  height: 40px; /* Fixed height */
+  border-radius: 50%; /* Circular shape */
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background for icons */
+  color: #f8f8f8; /* Icon color */
+  font-size: 1.3rem; /* Icon size */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.social-icons .social-link:hover {
+  background-color: #ffe066; /* Highlight background on hover */
+  color: #222; /* Darker icon color on hover for contrast */
+  transform: translateY(-3px); /* Slight lift effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-copyright {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Responsive adjustments for Footer */
+@media (max-width: 767.98px) {
+  .footer-heading {
+    text-align: center;
+  }
+  .text-md-start {
+    text-align: center !important; /* Override Bootstrap's text-md-start for mobile */
+  }
+  .text-md-end {
+    text-align: center !important; /* Override Bootstrap's text-md-end for mobile */
+  }
+  .social-icons {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}

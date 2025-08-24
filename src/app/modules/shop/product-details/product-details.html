@@ -1,0 +1,135 @@
+<app-navbar></app-navbar>
+<section class="py-lg-5">
+
+    <div class="container mt-5" *ngIf="product">
+      <div class="row  py-5">
+        <!-- IMAGE SECTION -->
+        <div class="col-md-7">
+          <div class="main-image mb-3">
+            <img [src]="selectedImage" [alt]="product?.name" class="img-fluid rounded shadow-sm slide-left" />
+          </div>
+    
+         <div class="position-relative">
+
+  <button class="btn btn-dark position-absolute top-50 start-0 translate-middle-y z-1"
+          (click)="scrollThumbnails('left')"
+          style="z-index: 2;">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+
+ 
+  <div #thumbnailContainer class="d-flex gap-2 overflow-auto flex-nowrap px-5" style="scroll-behavior: smooth;">
+    <img
+      *ngFor="let img of product?.images"
+      [src]="img"
+      [alt]="product?.name"
+      class="thumb-img mb-3"
+      [class.active]="img === selectedImage"
+      (click)="selectedImage = img"
+      style="height: 100px; width: 100px; object-fit: cover; cursor: pointer;"
+    />
+  </div>
+
+ 
+  <button class="btn btn-dark position-absolute top-50 end-0 translate-middle-y z-1"
+          (click)="scrollThumbnails('right')"
+          style="z-index: 2;">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+
+</div>
+
+        </div>
+    
+     <!-- PRODUCT INFO -->
+<div class="col-md-5">
+  <h2 class="fw-bold mt-4 mb-2">{{ product?.name }}</h2>
+  <p class="text-muted">{{ product?.description }}</p>
+ <!-- Price Range -->
+  <div class="mb-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-muted">Price Range:</span>
+      <span class="fw-bold" style="font-size: 20px!important;">{{ priceRange }}</span>
+    </div>
+  </div>
+  <ul class="list-unstyled d-flex gap-3 mb-2 small">
+    <li><strong>Year:</strong> {{ product?.year }}</li>
+    <!-- <li><strong>Images:</strong> {{ product?.images?.length }} photos</li> -->
+  </ul>
+
+ 
+
+  <!-- Select Print -->
+  <div class="mb-2">
+    <label for="printSelect" class="form-label fw-semibold">Select Print</label>
+    <select id="printSelect" class="auth-input" [(ngModel)]="selectedPrint" (change)="onSelectionChange()">
+      <option [ngValue]="null">Select an option</option>
+      <option *ngFor="let print of product?.print" [ngValue]="print">{{ print?.name }}</option>
+    </select>
+  </div>
+
+  <!-- Select Size -->
+  <div class="mb-2">
+    <label for="sizeSelect" class="form-label fw-semibold">Select Size</label>
+    <select  id="sizeSelect" class="auth-input" [(ngModel)]="selectedSize" (change)="onSelectionChange()">
+      <option [ngValue]="null">Select an option</option>
+      <option *ngFor="let size of product?.size" [ngValue]="size">{{ size?.name }}</option>
+    </select>
+  </div>
+
+  <!-- This block will only show after selections are made -->
+  <ng-container *ngIf="selectedPrint && selectedSize">
+    <!-- Calculated Price -->
+    <div class="mb-2">
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-muted">Unit Price:</span>
+        <span class="fw-bold">{{ calculatedAmount | currencyFormat }}</span>
+      </div>
+      <div class="d-flex align-items-center gap-3" *ngIf="quantity > 1">
+        <span class="text-muted">Total Price:</span>
+        <span class="fw-bold text-dark fs-5">{{ (calculatedAmount * quantity) | currencyFormat }}</span>
+      </div>
+    </div>
+
+    <!-- Quantity controls -->
+    <div class="d-flex align-items-center mb-3 gap-2">
+      <button class="btn btn-outline-secondary" (click)="changeQty('decrease')">−</button>
+      <input type="number" style="width: 60px!important;" class="form-control text-center w-auto" [(ngModel)]="quantity" readonly />
+      <button class="btn btn-outline-secondary" (click)="changeQty('increase')">+</button>
+      <span *ngIf="isCurrentSelectionInCart()" class="text-dark ms-2">
+        ({{ getCartQuantity() }} item(s) added)
+      </span>
+    </div>
+
+    <!-- Add to Cart button -->
+    <div class="d-flex gap-2 mb-3" *ngIf="!isCurrentSelectionInCart()">
+      <button class="btn btn-primary w-100" (click)="addToCart()">
+        <i class="bi bi-cart-plus me-1"></i> Add to Cart
+      </button>
+    </div>
+
+    <!-- View Cart button when item is in cart -->
+    <div class="d-flex gap-2 mb-3" *ngIf="isCurrentSelectionInCart()">
+      <button class="btn sec-btn w-100" (click)="goToCart()">
+        <i class="bi bi-cart"></i> View Cart
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- Message to prompt user to select options -->
+  <div *ngIf="!selectedPrint || !selectedSize" class="alert alert-info">
+    Please select a size and print to see the price and add to cart.
+  </div>
+</div>
+
+      </div>
+
+      <app-product-grid-carousel
+  [products]="suggestedProducts"
+  title="You May Also Like"
+  (productSelected)="viewProduct($event)"
+></app-product-grid-carousel>
+
+    </div>
+</section>
+<app-footer></app-footer>

@@ -1,0 +1,248 @@
+.dashboard-container {
+  padding: 0px 20px;
+}
+
+.dashboard-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.dashboard-overview {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  min-width: 280px;
+  flex: 1 1 280px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f8f9fa;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color, #3d5a2a), #4a6b3a);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 800;
+}
+
+.card-title i {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.orders-card .card-title i {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+}
+
+.products-card .card-title i {
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+}
+
+.portfolio-card .card-title i {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  color: #333;
+}
+
+.card-title h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: #333;
+}
+
+.dashboard-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #2c3e50;
+}
+
+.dashboard-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.card-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.card-trend i {
+  font-size: 0.75rem;
+}
+
+.dashboard-section {
+  margin-top: 2rem;
+}
+
+.dashboard-section h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.dashboard-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-links li a {
+  color: var(--primary-color, #3d5a2a);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.dashboard-links li a:hover {
+  color: var(--primary-color, #3d5a2a);
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.quick-link-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.quick-link-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-color: var(--primary-color, #3d5a2a);
+}
+
+.quick-link-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-color, #3d5a2a), #4a6b3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.quick-link-icon i {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.quick-link-content {
+  flex: 1;
+}
+
+.quick-link-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.40rem 0;
+  color: #333;
+}
+
+.quick-link-content p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.quick-link-arrow {
+  color: #ccc;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.quick-link-card:hover .quick-link-arrow {
+  color: var(--primary-color, #3d5a2a);
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .dashboard-overview {
+    flex-direction: column;
+  }
+  .dashboard-card {
+    padding: 1.2rem;
+    min-width: auto;
+    flex: none;
+  }
+  .dashboard-value {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-links-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .quick-link-card {
+    padding: 1.2rem;
+  }
+  
+  .quick-link-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.8rem;
+  }
+  
+  .quick-link-icon i {
+    font-size: 1.2rem;
+  }
+} 

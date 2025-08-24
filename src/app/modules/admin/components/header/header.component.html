@@ -1,0 +1,108 @@
+<header class="admin-header">
+  <div class="header-left">
+    <button class="sidebar-toggle" (click)="sidebarService.toggleSidebar()" aria-label="Toggle Sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="header-title">
+      <h1>Hi, Benny</h1>
+      <span class="subtitle">Manage your photography business</span>
+    </div>
+  </div>
+  
+  <!-- Search -->
+  <div class="header-right">
+    <div class="header-actions">
+      <!-- <div class="search-container">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search..." class="search-input">
+      </div>
+       -->
+      <!-- Notifications -->
+      <!-- <div class="notification-dropdown">
+        <button class="notification-btn" (click)="toggleNotifications()">
+          <i class="bi bi-bell"></i>
+          <span class="notification-badge">3</span>
+        </button>
+        <div class="notification-menu" [class.show]="showNotifications">
+          <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="mark-all-read">Mark all read</button>
+          </div>
+          <div class="notification-list">
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="bi bi-cart-check"></i>
+              </div>
+              <div class="notification-content">
+                <p>New order received</p>
+                <span class="notification-time">2 minutes ago</span>
+              </div>
+            </div>
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="bi bi-star"></i>
+              </div>
+              <div class="notification-content">
+                <p>New review posted</p>
+                <span class="notification-time">1 hour ago</span>
+              </div>
+            </div>
+            <div class="notification-item">
+              <div class="notification-icon">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="notification-content">
+                <p>New contact form submission</p>
+                <span class="notification-time">3 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      
+      <!-- User Profile -->
+      <!-- <div class="user-dropdown">
+        <button class="user-btn" (click)="toggleUserMenu()">
+          <div class="user-avatar">
+            <i class="bi bi-person-circle"></i>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Admin User</span>
+            <span class="user-role">Administrator</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="user-menu" [class.show]="showUserMenu">
+          <div class="user-menu-header">
+            <div class="user-avatar-large">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name">Admin User</span>
+              <span class="user-email">admin&#64;photography.com</span>
+            </div>
+          </div>
+          <div class="user-menu-items">
+            <a href="#" class="menu-item">
+              <i class="bi bi-person"></i>
+              <span>Profile</span>
+            </a>
+            <a href="#" class="menu-item">
+              <i class="bi bi-gear"></i>
+              <span>Settings</span>
+            </a>
+            <a href="#" class="menu-item">
+              <i class="bi bi-question-circle"></i>
+              <span>Help</span>
+            </a>
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item logout" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</header>

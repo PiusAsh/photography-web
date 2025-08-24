@@ -1,0 +1,173 @@
+<app-navbar></app-navbar>
+
+<div class="cart-container mt-5">
+  <!-- Header Section -->
+  <div class="cart-header mt-5">
+    <div class="container">
+      <div class="header-content">
+        <div class="header-left mt-5">
+          <h1 class="cart-title">
+            <i class="bi bi-cart3"></i>
+            Shopping Cart
+          </h1>
+          <p class="cart-subtitle">{{ getCount() }} {{ getCount() === 0 ? 'item': 'items'}} in your cart</p>
+        </div>
+        <div class="header-right">
+          <button class="btn-continue-shopping" (click)="gotoPage('/store')">
+            <i class="bi bi-arrow-left"></i>
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="cart-main">
+    <div class="container">
+      <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-content">
+        <div class="cart-layout">
+          <!-- Cart Items List -->
+          <div class="cart-items-section">
+            <div class="section-header">
+              <h3>Cart Items</h3>
+              <span class="item-count">{{ getCount() }} items</span>
+            </div>
+            
+            <div class="cart-items-list">
+              <div class="cart-item" *ngFor="let item of cartItems; trackBy: trackByItem">
+                <div class="item-image">
+                  <img [src]="item?.product?.mainImage" [alt]="item?.product?.name" />
+                </div>
+                
+                <div class="item-details">
+                  <div class="item-info">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                      <h4 class="item-name">{{ item?.product?.name }}</h4>
+                         <button class="btn-remove" (click)="removeFromCart(item)" title="Remove item">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                    </div>
+                    <p class="item-description">{{ item?.product?.description }}</p>
+                    <div class="item-meta mb-2">
+
+                       <div class="item-year">
+
+                        <span class="option-label">Year:</span>
+                        <span class="option-value">{{ item?.product?.year }}</span>
+                      </div>
+
+                    </div>
+                  
+                    <div class="item-meta" *ngIf="item?.options">
+                      <div class="item-year">
+
+                        <span class="option-label">Size:</span>
+                        <span class="option-value">{{ item?.options?.size?.name }}</span>
+                      </div>
+                      <div>
+                        <span class="option-label">Print:</span>
+                        <span class="option-value">{{ item?.options?.print?.name }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- <div class="item-price">
+                    <span class="unit-price">{{ item?.product?.price | currencyFormat }}</span>
+                    <span class="total-price">{{ (item?.product?.price * item?.quantity) | currencyFormat }}</span>
+                  </div>
+                  <div class="item-price">
+                 <span class="option-value">Unit Price</span>   <span class="unit-price">{{ item?.product?.price | currencyFormat }}</span>
+                <span>Total Price</span>    <span class="total-price">{{ (item?.product?.price * item?.quantity) | currencyFormat }}</span>
+                  </div> -->
+                </div>
+                <div>
+
+                  <div class="item-actions">
+                    <div class="quantity-controls">
+                      <button class="btn-quantity" (click)="updateQuantity(item, 'decrease')" [disabled]="item.quantity <= 1">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <span class="quantity-display">{{ item?.quantity }}</span>
+                      <button class="btn-quantity" (click)="updateQuantity(item, 'increase')">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                    
+                 
+                  </div>
+                  <div class="item-price text-center mt-3">
+                    <div>
+
+                      <small style="font-size: 18px!important; font-weight: 300!important;" class="unit-price"><span class=""  style="font-size: 12px!important; font-weight: 500!important;">Unit:</span>&nbsp;{{ item.product.price | currencyFormat }}</small>
+                    </div>
+                    <div>
+
+                      <p style="font-weight: 900!important;font-size: 18px!important;" class="total-price"><span style="font-size: 12px!important; font-weight: 500!important;" class="">Total:&nbsp;</span> {{ (item.product.price * item.quantity) | currencyFormat }}</p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <div class="summary-card">
+              <h3 class="summary-title">Order Summary</h3>
+              
+              <div class="summary-details">
+                <div class="summary-row">
+                  <span>Items ({{ getCount() }})</span>
+                  <span>{{ getTotal() | currencyFormat}}</span>
+                </div>
+                
+                <!-- <div class="summary-row">
+                  <span>Shipping</span>
+                  <span class="text-success">Free</span>
+                </div>
+                 -->
+                <div class="summary-divider"></div>
+                
+                <div class="summary-row total-row">
+                  <span>Total</span>
+                  <span class="total-amount">₦{{ getTotal().toLocaleString() }}</span>
+                </div>
+              </div>
+              
+              <button style="padding: 15px 10px!important;" class="btn btn-primary w-100" (click)="goToCheckout()">
+                Proceed to Checkout
+              </button>
+              
+              <div class="secure-checkout mt-2">
+                <i class="bi bi-shield-check"></i>
+                <span>Secure checkout powered by Paystack</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Cart State -->
+      <ng-template #emptyCart>
+        <div class="empty-cart">
+          <div class="empty-cart-content">
+            <div class="empty-cart-icon">
+              <i class="bi bi-cart-x"></i>
+            </div>
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added anything to your cart yet.</p>
+            <button class="btn-start-shopping" (click)="gotoPage('/store')">
+              <i class="bi bi-shop"></i>
+              Start Shopping
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

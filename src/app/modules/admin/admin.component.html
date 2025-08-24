@@ -1,0 +1,7 @@
+<div class="admin-layout" [class.sidebar-hidden]="!sidebarService.isSidebarVisible()">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <app-header></app-header>
+    <router-outlet class="router mt-lg-5"></router-outlet>
+  </div>
+</div>

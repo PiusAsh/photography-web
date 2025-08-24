@@ -1,0 +1,224 @@
+<div class="add-product-container">
+  <div class="page-header border-bottom">
+    <div class="header-content">
+      <h1 class="page-title">
+        Create New Product
+      </h1>
+      <p class="page-subtitle">Add a new photography product to your store</p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Basic Information Card -->
+      <div class="form-card">
+        <div class="card-header">
+          <i class="bi bi-info-circle"></i>
+          <h3>Basic Information</h3>
+        </div>
+        <div class="card-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">
+                <i class="bi bi-tag"></i>
+                Product Name <span class="required">*</span>
+              </label>
+              <input class="form-input" formControlName="name" placeholder="Enter product name">
+              <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                Product name is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="bi bi-currency-dollar"></i>
+                Price <span class="required">*</span>
+              </label>
+              <input type="number" class="form-input" formControlName="price" placeholder="Enter price">
+              <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                Price is required.
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-file-text"></i>
+              Description <span class="required">*</span>
+            </label>
+            <textarea class="form-input" formControlName="description" placeholder="Enter product description"></textarea>
+            <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              Description is required.
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-calendar"></i>
+              Year <span class="required">*</span>
+            </label>
+            <input type="number" class="form-input" formControlName="year" placeholder="Enter year">
+            <div *ngIf="productForm.get('year')?.invalid && productForm.get('year')?.touched" class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              Year is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sizes Card -->
+      <div class="form-card mt-2 mb-2">
+        <div class="card-header">
+          <i class="bi bi-arrows-angle-expand"></i>
+          <h3>Product Sizes</h3>
+        </div>
+        <div class="card-content">
+          <div formArrayName="size">
+            <div *ngFor="let sizeControl of size.controls; let i=index" [formGroupName]="i" class="dynamic-item">
+              <div class="item-inputs">
+                <div class="form-group">
+                  <input class="form-input" formControlName="name" placeholder="Size name (e.g., Regular: 20 x 20)">
+                  <div *ngIf="sizeControl.get('name')?.invalid && sizeControl.get('name')?.touched" class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Size name is required.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="number" class="form-input" formControlName="amount" placeholder="Amount">
+                  <div *ngIf="sizeControl.get('amount')?.invalid && sizeControl.get('amount')?.touched" class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Amount is required.
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-remove" (click)="removeSize(i)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <button type="button" class="btn-add" (click)="addSize()">
+              <i class="bi bi-plus"></i>
+              Add Size
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prints Card -->
+      <div class="form-card mb-2">
+        <div class="card-header">
+          <i class="bi bi-printer"></i>
+          <h3>Print Options</h3>
+        </div>
+        <div class="card-content">
+          <div formArrayName="print">
+            <div *ngFor="let printControl of print.controls; let i=index" [formGroupName]="i" class="dynamic-item">
+              <div class="item-inputs">
+                <div class="form-group">
+                  <input class="form-input" formControlName="name" placeholder="Print type (e.g., Canvas)">
+                  <div *ngIf="printControl.get('name')?.invalid && printControl.get('name')?.touched" class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Print name is required.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="number" class="form-input" formControlName="amount" placeholder="Amount">
+                  <div *ngIf="printControl.get('amount')?.invalid && printControl.get('amount')?.touched" class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Amount is required.
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-remove" (click)="removePrint(i)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <button type="button" class="btn-add" (click)="addPrint()">
+              <i class="bi bi-plus"></i>
+              Add Print
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images Card -->
+      <div class="form-card">
+        <div class="card-header">
+          <i class="bi bi-images"></i>
+          <h3>Product Images</h3>
+        </div>
+        <div class="card-content">
+          
+          <!-- Main Image -->
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-star"></i>
+              Main Image
+            </label>
+            <div class="image-upload-area" 
+                 (click)="mainFileInput.click()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event, 'main')"
+                 [class.drag-over]="isDragOver">
+              <ng-container *ngIf="!mainImagePreviewUrl">
+                <div class="upload-placeholder">
+                  <i class="bi bi-cloud-upload"></i>
+                  <p>Click to upload or drag & drop main image</p>
+                  <span>Recommended: 800x600px</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="mainImagePreviewUrl">
+                <img [src]="mainImagePreviewUrl" alt="Main Image Preview" class="image-preview">
+                <button type="button" class="btn-remove-image" (click)="removeMainImage($event)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </ng-container>
+            </div>
+            <input type="file" #mainFileInput style="display: none;" (change)="onFileSelected($event)">
+          </div>
+
+          <!-- Additional Images -->
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-collection"></i>
+              Additional Images
+            </label>
+            <div class="image-upload-area" 
+                 (click)="multipleFileInput.click()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event, 'additional')"
+                 [class.drag-over]="isDragOver">
+              <div class="upload-placeholder">
+                <i class="bi bi-cloud-upload"></i>
+                <p>Click to upload or drag & drop additional images</p>
+                <span>You can select multiple files</span>
+              </div>
+            </div>
+            <input type="file" #multipleFileInput style="display: none;" (change)="onMultipleFilesSelected($event)" multiple>
+            
+            <div class="additional-images-preview">
+              <div *ngFor="let imageUrl of additionalImagePreviewUrls; let i = index" class="image-preview-item">
+                <img [src]="imageUrl" alt="Additional Image Preview" class="image-preview">
+                <button type="button" class="btn-remove-image" (click)="removeAdditionalImage(i)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <button type="submit" class="btn-submit" [disabled]="productForm.invalid">
+          <i class="bi bi-check-circle"></i>
+          Create Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

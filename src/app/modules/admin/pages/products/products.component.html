@@ -1,0 +1,131 @@
+<div class="container-fluid">
+  <div class="pageRow">
+    <div class="col-md-12">
+      <h3 class="page-name">Create New Product</h3>
+    </div>
+  </div>
+  <div class="content">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">Product Name <span class="star">*</span></label>
+            <input class="auth-input" formControlName="name" placeholder="Enter product name">
+            <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="error-text">
+              Product name is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">Price <span class="star">*</span></label>
+            <input type="number" class="auth-input" formControlName="price" placeholder="Enter price">
+            <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="error-text">
+              Price is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-label">Description <span class="star">*</span></label>
+            <textarea class="auth-input" formControlName="description" placeholder="Enter description"></textarea>
+            <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" class="error-text">
+              Description is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-label">Year <span class="star">*</span></label>
+            <input type="number" class="auth-input" formControlName="year" placeholder="Enter year">
+            <div *ngIf="productForm.get('year')?.invalid && productForm.get('year')?.touched" class="error-text">
+              Year is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div formArrayName="size">
+        <label class="form-label">Sizes <span class="star">*</span></label>
+        <div *ngFor="let sizeControl of size.controls; let i=index" [formGroupName]="i" class="row align-items-center mb-3">
+          <div class="col-md-5">
+            <input class="auth-input" formControlName="name" placeholder="Enter size name (e.g., Regular: 20 x 20)">
+            <div *ngIf="sizeControl.get('name')?.invalid && sizeControl.get('name')?.touched" class="error-text">
+              Size name is required.
+            </div>
+          </div>
+          <div class="col-md-5">
+            <input type="number" class="auth-input" formControlName="amount" placeholder="Enter amount">
+            <div *ngIf="sizeControl.get('amount')?.invalid && sizeControl.get('amount')?.touched" class="error-text">
+              Amount is required.
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-danger btn-add-remove" (click)="removeSize(i)">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-add" (click)="addSize()">Add Size</button>
+      </div>
+
+      <div formArrayName="print" class="mt-4">
+        <label class="form-label">Prints <span class="star">*</span></label>
+        <div *ngFor="let printControl of print.controls; let i=index" [formGroupName]="i" class="row align-items-center mb-3">
+          <div class="col-md-5">
+            <input class="auth-input" formControlName="name" placeholder="Enter print name (e.g., Canvas)">
+            <div *ngIf="printControl.get('name')?.invalid && printControl.get('name')?.touched" class="error-text">
+              Print name is required.
+            </div>
+          </div>
+          <div class="col-md-5">
+            <input type="number" class="auth-input" formControlName="amount" placeholder="Enter amount">
+            <div *ngIf="printControl.get('amount')?.invalid && printControl.get('amount')?.touched" class="error-text">
+              Amount is required.
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-danger btn-add-remove" (click)="removePrint(i)">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-add" (click)="addPrint()">Add Print</button>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="form-label">Main Image</label>
+        <div class="image-upload-area" (click)="mainFileInput.click()">
+          <ng-container *ngIf="!mainImagePreviewUrl">
+            <p>Click to upload main image</p>
+            <i class="fas fa-upload"></i>
+          </ng-container>
+          <ng-container *ngIf="mainImagePreviewUrl">
+            <img [src]="mainImagePreviewUrl" alt="Main Image Preview" class="image-preview">
+            <button type="button" class="btn btn-danger btn-sm remove-image-btn" (click)="removeMainImage($event)">X</button>
+          </ng-container>
+        </div>
+        <input type="file" #mainFileInput style="display: none;" (change)="onFileSelected($event)">
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="form-label">Additional Images</label>
+        <div class="image-upload-area" (click)="multipleFileInput.click()">
+          <p>Click to upload additional images</p>
+          <i class="fas fa-upload"></i>
+        </div>
+        <input type="file" #multipleFileInput style="display: none;" (change)="onMultipleFilesSelected($event)" multiple>
+        <div class="additional-images-preview-container">
+          <div *ngFor="let imageUrl of additionalImagePreviewUrls; let i = index" class="image-preview-wrapper">
+            <img [src]="imageUrl" alt="Additional Image Preview" class="image-preview">
+            <button type="button" class="btn btn-danger btn-sm remove-image-btn" (click)="removeAdditionalImage(i)">X</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-wrapper">
+        <button type="submit" class="btn-submit" [disabled]="productForm.invalid">Create Product</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,157 @@
+.main-image img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  max-height: 450px;
+}
+
+.thumb-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.thumb-img:hover,
+.thumb-img.active {
+  border-color: var(--primary-color, #0d6efd);
+  transform: scale(1.05);
+}
+
+// Cart Items List Styling
+.cart-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .cart-item-info {
+    .quantity-controls {
+      .quantity-display {
+        font-weight: 600;
+        color: #333;
+        min-width: 30px;
+        text-align: center;
+      }
+    }
+  }
+  
+  .cart-item-actions {
+    .cart-item-price {
+      color: var(--primary-color, #0d6efd);
+      font-weight: 600;
+    }
+  }
+}
+
+.cart-total {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 769px) {
+     .btn-primary, .btn-outline-danger {
+    padding: 0.8rem 2rem!important;
+    font-size: 0.9rem!important;
+   }
+   .price{
+     color: var(--primary-color)!important;
+     font-weight: 600!important;
+     font-size: 24px!important;
+   }
+}
+
+.price{
+    color: var(--primary-color)!important;
+    font-weight: 600!important;
+    font-size: 27px!important;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal.show {
+  display: flex;
+}
+
+.modal-center-content {
+  background: #fff;
+  max-width: 700px;
+  width:
+   100%;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal-top {
+  border-bottom: 1px solid #ffe082;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.modal-heading {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.variation-table th, .variation-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.variation-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.variation-table td {
+  background: #fff;
+}
+
+.variation-table .quantity-display {
+  min-width: 32px;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.btn-warning, .btn-outline-warning {
+  background: #ff9900;
+  border-color: #ff9900;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-outline-warning {
+  background: #fff;
+  color: #ff9900;
+}
+
+.btn-warning:hover, .btn-outline-warning:hover {
+  background: #ffb84d;
+  border-color: #ffb84d;
+  color: #fff;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+} 

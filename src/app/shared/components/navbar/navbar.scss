@@ -1,0 +1,160 @@
+
+.appoint-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
+  border-color: #fff;
+  color: white;
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.appoint-button {
+  background-color: var(--primary-color) !important; 
+   border-color: #fff;
+  color: white;
+}
+
+.head-text{
+    
+    font-size: 60px!important;
+    font-weight: 700;
+    font-style: italic;
+}
+/* Navbar Styles */
+.navbar {
+  transition: background-color 0.4s ease-in-out, padding 0.4s ease-in-out; /* Smooth transition for background and padding */
+  padding: 1rem 6rem; /* Default padding for top/bottom */
+  
+}
+
+/* Base styles */
+.navbar-nav .nav-link {
+  color: white!important;
+  font-weight: 400;
+  padding: 0.5rem 1.4rem;
+  cursor: pointer;
+
+  /* Add smooth transition for padding and border */
+  transition: padding 0.3s ease, border-bottom 0.3s ease;
+}
+
+/* Hover styles */
+.navbar-nav .nav-link:hover {
+border-bottom: 2px solid white;
+  padding: 0.5rem 1.6rem;
+  width: max-content;
+}
+
+.style-text p{
+    // font-family: "Pacifico", cursive!important;
+    //  font-family: "Libertinus Math", system-ui!important;
+      font-family: "Kaushan Script", cursive!important;
+  font-weight: 200!important;
+  font-style: italic;
+  letter-spacing: 0.2ch;
+  color: #ffffffd7;
+
+}
+.navbar-brand {
+  font-size: 1.7rem;
+  letter-spacing: 0.05em;
+  font-style: italic;
+   /* A little spacing for "PHOTOGRAPHY" */
+}
+
+.navbar-toggler-icon {
+  filter: invert(1); /* Makes the toggler icon white against dark background */
+}
+
+/* Navbar Scrolled State */
+.navbar {
+  // background-color: rgba(255, 255, 255, 0.98);
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow when scrolled */
+  padding: 0.3rem 4rem; /* Reduced padding when scrolled */
+
+  .navbar-logo{
+  width: 100px;
+  transition: opacity 0.4s ease-in-out;
+}
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) { /* Medium devices and below */
+  .navbar-nav {
+    // background-color: rgba(255, 255, 255, 0.95); /* White background for collapsed menu */
+    border-radius: 0.5rem;
+    padding: 2rem 0rem;
+    // margin-top: 0.5rem;
+  }
+  .appoint-button{
+    margin-bottom: 20px!important;
+  }
+ 
+  .navbar-nav .nav-link {
+    color: #333; /* Dark text for collapsed menu */
+  }
+  .navbar .btn-primary {
+    margin-top: 1rem;
+    width: 100%; /* Full width button in collapsed menu */
+  }
+}
+
+@media (max-width: 767.98px) { /* Small devices and below */
+  .navbar {
+    padding: 1rem 0;
+  }
+ 
+
+}
+
+@media (max-width: 769px) {
+
+.navbar-nav .nav-link:hover {
+  width: max-content;
+}
+.head-text{
+    font-size: 35px!important;
+    font-weight: 700;
+    margin-top: 40px!important;
+    font-style: italic;
+}
+.head-paragraph{
+text-align: center;
+}
+
+
+}
+
+
+
+
+/* Animations for portfolio items */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+
+@media (max-width: 767.98px) {
+
+}
+
+.navbar-toggler {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important; /* Ensure no border on focus either */
+}

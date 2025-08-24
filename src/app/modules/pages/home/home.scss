@@ -1,0 +1,501 @@
+.appoint-button{
+border: 2px solid #fff;
+color: white;
+padding: 5px 20px;
+}
+
+.appoint-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
+  border-color: #fff;
+  color: white;
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.appoint-button.button-scroll {
+  background-color: var(--primary-color) !important; 
+  border-color: none !important; 
+}
+
+.head-text{
+    font-size: 60px!important;
+    font-weight: 700;
+    font-style: italic;
+}
+/* Navbar Styles */
+.navbar {
+  transition: background-color 0.4s ease-in-out, padding 0.4s ease-in-out; /* Smooth transition for background and padding */
+  background-color: transparent; /* Default transparent background */
+  padding: 1rem 6rem; /* Default padding for top/bottom */
+  z-index: 1030; /* Ensure navbar is above other content */
+}
+
+/* Base styles */
+.navbar-nav .nav-link {
+  color: white;
+  font-weight: 400;
+  padding: 0.5rem 1.4rem;
+  cursor: pointer;
+
+  /* Add smooth transition for padding and border */
+  transition: padding 0.3s ease, border-bottom 0.3s ease;
+}
+
+/* Hover styles */
+.navbar-nav .nav-link:hover {
+border-bottom: 2px solid white;
+  padding: 0.5rem 1.6rem;
+  width: max-content;
+}
+
+.style-text p{
+    // font-family: "Pacifico", cursive!important;
+    //  font-family: "Libertinus Math", system-ui!important;
+      font-family: "Kaushan Script", cursive!important;
+  font-weight: 200!important;
+  font-style: italic;
+  letter-spacing: 0.2ch;
+  color: #ffffffd7;
+
+}
+.navbar-brand {
+  font-size: 1.7rem;
+  letter-spacing: 0.05em;
+  font-style: italic;
+   /* A little spacing for "PHOTOGRAPHY" */
+}
+
+.navbar-toggler-icon {
+  filter: invert(1); /* Makes the toggler icon white against dark background */
+}
+
+/* Navbar Scrolled State */
+.navbar.scrolled {
+  // background-color: rgba(255, 255, 255, 0.98);
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow when scrolled */
+  padding: 0.3rem 4rem; /* Reduced padding when scrolled */
+
+  .navbar-logo{
+  width: 100px;
+  transition: opacity 0.4s ease-in-out;
+}
+}
+
+.navbar.scrolled .navbar-brand,
+.navbar.scrolled .navbar-nav .nav-link {
+  color: #fff; /* Darker text color when scrolled */
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Hide overflow from background images */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.background-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #262627;
+  background-size: cover; /* Fills the area without stretching */
+  background-repeat: no-repeat;
+  background-position: top center; /* Focus on the top (or adjust to key area) */
+  filter: brightness(0.4);
+  transition: background-image 1s ease-in-out;
+  will-change: background-image;
+}
+// .background-slider {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   /* Default background color when image is not loaded yet */
+//   background-color: #1a1a1a; /* Dark gray for a pre-load overlay */
+//   /* Using 100% auto to fill width and show entire image.
+//      This might create vertical empty space (letterboxing) if the image's aspect ratio
+//      doesn't match the viewport's, but guarantees no cropping. */
+//   background-size: 100% auto;
+//   background-repeat: no-repeat; /* Ensure no tiling */
+//   background-position: center top; /* Prioritize the top of the image */
+//   filter: brightness(0.6); /* Darken the image slightly for text readability */
+//   transition: background-image 1s ease-in-out; /* Smooth transition for image change */
+//   will-change: background-image; /* Optimize for animation */
+// }
+.navbar-toggler {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important; /* Ensure no border on focus either */
+}
+.navbar-logo{
+  width: 150px;
+  transition: opacity 0.4s ease-in-out;
+}
+/* Content Overlay */
+.hero-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* On top of the background */
+  display: flex;
+  align-items: center; /* Vertically center content */
+}
+
+.hero-content h1 {
+  font-size: 4.8rem; /* Adjust as needed */
+  line-height: 1.1;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6); /* More prominent shadow */
+}
+
+.hero-content h1 em {
+  color: #ffe066; /* A soft gold for emphasis */
+  font-style: normal;
+  transition: color 0.3s ease-in-out; /* Smooth transition for dynamic word color */
+}
+
+.hero-content .btn-light {
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white button */
+  color: #333;
+  padding: 0.5rem 2rem; /* Larger padding for a more prominent button */
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-top: 2rem; /* More spacing from heading */
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.hero-content .btn-light:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Right bottom text */
+.hero-content .col-md-6.d-flex p {
+  line-height: 1.2;
+  font-weight: 400;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) { /* Medium devices and below */
+  .navbar-nav {
+    // background-color: rgba(255, 255, 255, 0.95); /* White background for collapsed menu */
+    border-radius: 0.5rem;
+    padding: 2rem 0rem;
+    // margin-top: 0.5rem;
+  }
+  .appoint-button{
+    margin-bottom: 20px!important;
+  }
+ 
+  .navbar-nav .nav-link {
+    color: #333; /* Dark text for collapsed menu */
+  }
+  .navbar .btn-primary {
+    margin-top: 1rem;
+    width: 100%; /* Full width button in collapsed menu */
+  }
+}
+
+@media (max-width: 767.98px) { /* Small devices and below */
+  .navbar {
+    padding: 1rem 0;
+  }
+  .navbar-brand {
+    // font-size: 1.5rem;
+  }
+  .hero-content h1 {
+    font-size: 3.5rem;
+    text-align: center;
+  }
+  .hero-content .btn-light {
+    display: block;
+    width: fit-content;
+    margin: 1.5rem auto 0 auto;
+  }
+  .hero-content .col-md-6.d-flex {
+    justify-content: center;
+    align-items: center;
+    text-align: center !important;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 769px) {
+    .navbar.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow when scrolled */
+  padding: 0.3rem 0; /* Reduced padding when scrolled */
+}
+.navbar-nav .nav-link:hover {
+  width: max-content;
+}
+.head-text{
+    font-size: 35px!important;
+    font-weight: 700;
+    margin-top: 40px!important;
+    font-style: italic;
+}
+.head-paragraph{
+text-align: center;
+}
+
+.style-text .first{
+margin-top: 40px!important;
+
+
+}
+.hero-content .btn-light {
+  
+  padding: 0.5rem 2rem; /* Larger padding for a more prominent button */
+  font-size: 0.9rem!important;
+  border-radius: 0.5rem;
+  font-weight: 700!important;
+  margin-top: 3rem;
+  
+}
+
+}
+@media (max-width: 575.98px) { /* Extra small devices */
+  .hero-content h1 {
+    font-size: 2.8rem;
+  }
+  .hero-content .btn-light {
+    font-size: 1.1rem;
+    padding: 0.7rem 2rem;
+  }
+  .hero-content .col-md-6.d-flex p {
+    font-size: 1rem;
+  }
+}
+
+
+/* Portfolio Section Styling */
+.portfolio-section {
+  // background-color: #262627fb; /* Using CSS variable */
+  background-color: lightgray;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  // color: white; /* Text color for portfolio section */
+}
+
+.section-heading {
+  font-size: 2.4rem; /* Adjusted font size */
+  font-weight: 700;
+  font-style: italic;
+  color: #333; /* White heading text */
+  margin-bottom: 3rem;
+  margin-top: 4rem;
+}
+
+/* Portfolio Tabs (Nav-pills) */
+.portfolio-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Lighter line for dark background */
+  padding-bottom: 0.5rem;
+ 
+}
+
+.portfolio-tabs .nav-item {
+  margin: 0 .4rem;
+}
+
+.portfolio-tabs .nav-link {
+  color: #333; /* White text for tabs */
+  font-weight: 600;
+  padding: 0.40rem 0.9rem;
+  border-radius: 0;
+  transition: all 0.3s ease-in-out;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+   font-style: italic;
+}
+
+.portfolio-tabs .nav-link:hover {
+  color: #333 /* Using CSS variable */
+
+}
+
+.portfolio-tabs .nav-link.active {
+  background-color: transparent;
+  color: #fff; /* Using CSS variable  */
+  border-color: transparent;
+  padding: 0.40rem 0.9rem;
+  background-color: var(--primary-color); /* Show bottom border for active tab */
+  box-shadow: none;
+  // font-size: 40px!important;
+  font-weight: 700!important;
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+  display: grid; /* Use grid for more precise column control */
+  grid-template-columns: repeat(auto-fill, minmax(322px, 1fr)); /* Auto-fill with 322px items, flexible to fill row */
+  gap: 1px; /* This creates the 1px line between items */
+  // background-color: rgba(255, 255, 255, 0.1); /* This color shows in the gaps as the border */
+  padding-top: 1rem;
+  /* Removed explicit border-left/border-top as gaps handle it */
+border-top: 2px solid #333;
+  /* Animation for the grid itself, applied when showPortfolioGrid becomes true */
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none; /* No box shadow as requested */
+  cursor: pointer;
+  width: 322px; /* Fixed width for desktop */
+  height: 500px; /* Fixed height for desktop */
+  transition: transform 0.3s ease-in-out; /* Keep transform for hover effect */
+
+  /* Initial state for slide-in animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.6s ease-out forwards; /* Apply animation to each item */
+}
+
+.portfolio-item:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+  z-index: 1; /* Bring hovered item to front */
+  box-shadow: none; /* No box-shadow on hover as requested */
+}
+
+.portfolio-image {
+  width: 100%;
+  height: 100%; /* Image fills its 322x500 container */
+  object-fit: cover; /* This will crop images to fill 322x500, ensuring consistent display height/width */
+  display: block;
+  transition: transform 0.5s ease-in-out;
+}
+
+.portfolio-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Darker overlay for better text contrast */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 1.5rem; /* Increased padding */
+  box-sizing: border-box;
+  transform: translateY(100%);
+  font-size: 14px;
+  opacity: 0;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-description {
+  font-size: 1rem; /* Slightly larger font for description */
+  font-weight: 500;
+  margin: 0;
+  max-width: 90%; /* Limit width for long descriptions */
+}
+
+/* Animations for portfolio items */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+/* Responsive adjustments for portfolio */
+@media (max-width: 767.98px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+    gap: 1px; /* Keep gap for mobile */
+  }
+  .portfolio-item {
+    width: auto; /* Let grid calculate width for 2 columns */
+    height: 250px; /* Adjusted height for mobile to prevent excessively long items */
+  }
+  .portfolio-image {
+    height: 100%; /* Image fills adjusted item height */
+  }
+  .portfolio-tabs .nav-item {
+    width: 100%; /* Full width tabs on small screens */
+    margin: 0.25rem 0;
+  }
+  .portfolio-tabs .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+
+
+    .cta-heading {
+    font-size: 1.6rem!important;
+  }
+  .cta-description {
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+  .cta-button {
+    padding: 0.8rem 2rem!important;
+    font-size: 0.9rem!important;
+  }
+  .btn-primary {
+    padding: 0.8rem 2rem!important;
+    font-size: 0.9rem!important;
+  }
+}
+
+@media (max-width: 575.98px) { /* Adjust further for very small screens if needed */
+  .portfolio-grid {
+    /* On very narrow screens, two columns might still be too cramped.
+       You might consider a single column here or reduce image height further. */
+    /* Example: grid-template-columns: 1fr; */
+  }
+  .portfolio-item {
+    /* Example: height: 200px; */
+  }
+}
+
+
+
+  .cta-heading {
+    font-size: 2rem;
+  }
+  .cta-description {
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+  .cta-button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }

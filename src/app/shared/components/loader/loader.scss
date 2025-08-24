@@ -1,0 +1,34 @@
+
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.941);
+  z-index: 9999;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-logo {
+  width: 72px;
+  height: 72px;
+  animation: spin 1s linear infinite;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+  

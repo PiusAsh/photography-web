@@ -1,0 +1,39 @@
+<div class="orders-container">
+  <h2>Orders</h2>
+
+  <div *ngIf="orders.length === 0" class="no-orders">
+    <p>No orders found.</p>
+  </div>
+
+  <div *ngIf="orders.length > 0" class="orders-list">
+    <div *ngFor="let order of orders" class="order-card">
+      <h3>Order ID: {{ order.id }}</h3>
+      <p><strong>Customer:</strong> {{ order.customer.name }} ({{ order.customer.email }})</p>
+      <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
+      <p><strong>Address:</strong> {{ order.customer.address }}</p>
+      <p><strong>Total Amount:</strong> {{ order.totalAmount | currency:'USD':'symbol':'1.2-2' }}</p>
+      <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
+      <p><strong>Payment Status:</strong> {{ order.paymentStatus }}</p>
+      <p><strong>Order Status:</strong> {{ order.orderStatus }}</p>
+      <p><strong>Order Date:</strong> {{ order.orderDate | date:'medium' }}</p>
+      <p><strong>Secret Code:</strong> {{ order.secretCode }}</p>
+
+      <h4>Items:</h4>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.productName || 'N/A' }} - Quantity: {{ item.quantity }} - Unit Price: {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
+          <div *ngIf="item.options">
+            <p *ngIf="item.options.size">Size: {{ item.options.size.name }} ({{ item.options.size.amount | currency:'USD':'symbol':'1.2-2' }})</p>
+            <p *ngIf="item.options.print">Print: {{ item.options.print.name }} ({{ item.options.print.amount | currency:'USD':'symbol':'1.2-2' }})</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="totalPages > 1" class="pagination">
+    <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+    <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+  </div>
+</div>

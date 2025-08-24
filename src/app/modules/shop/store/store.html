@@ -1,0 +1,110 @@
+<app-navbar></app-navbar>
+
+<div class="store-container">
+ 
+<div class="" style="padding-top: 100px!important;">
+  <h1 class="hero-title text-center">Discover Beautiful Photography</h1>
+  <p class="hero-subtitle text-center">Explore our curated collection of stunning prints</p>
+</div>
+  <!-- Products Section -->
+  <div class="products-section">
+    <div class="container">
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="loading">
+        <div class="loading-spinner">
+          <i class="bi bi-arrow-clockwise"></i>
+        </div>
+        <p>Loading beautiful prints...</p>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" *ngIf="!loading && products.length > 0">
+        <div class="product-card" *ngFor="let product of products" (click)="viewProduct(product)">
+          <div class="product-image-container">
+            <img [src]="product.mainImage" [alt]="product.name" class="product-image">
+            <div class="product-overlay">
+              <button class="btn-quick-view" (click)="viewProduct(product); $event.stopPropagation()">
+                <i class="bi bi-eye"></i>
+                Quick View
+              </button>
+              <button class="btn-add-cart" (click)="addToCart(product); $event.stopPropagation()">
+                <i class="bi bi-cart-plus"></i>
+                Add to Cart
+              </button>
+            </div>
+            <!-- <div class="product-badge" *ngIf="product.year >= 2024">
+              <i class="bi bi-star"></i>
+              New
+            </div> -->
+          </div>
+          
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            
+            <div class="product-meta">
+              <span class="product-year">{{ product.year }}</span>
+              <span class="product-price">{{ getPriceRange(product) }}</span>
+            </div>
+            
+            <div class="product-actions">
+              <button class="btn-view-details" (click)="viewProduct(product); $event.stopPropagation()">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!loading && products.length === 0">
+        <div class="empty-icon">
+          <i class="bi bi-images"></i>
+        </div>
+        <h3>No products found</h3>
+        <p>Try adjusting your search or filters</p>
+        <button class="btn-reset-filters" (click)="searchTerm = ''; selectedCategory = ''; loadProducts()">
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-section" *ngIf="totalPages > 1">
+    <div class="container">
+      <div class="pagination">
+        <button 
+          class="btn-page" 
+          [disabled]="currentPage === 1"
+          (click)="onPageChange(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+          Previous
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            class="btn-page-number" 
+            *ngFor="let page of getPages()"
+            [class.active]="page === currentPage"
+            (click)="onPageChange(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          class="btn-page" 
+          [disabled]="currentPage === totalPages"
+          (click)="onPageChange(currentPage + 1)"
+        >
+          Next
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

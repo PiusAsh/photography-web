@@ -1,0 +1,157 @@
+<nav class="navbar navbar-expand-lg fixed-top slide-top mobile-only">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+
+      <img
+        src="/images/benny-logo-white.png"
+        alt="Benny Hosea Logo White"
+        class="navbar-logo"
+      />
+    
+    </a>
+       <div class="cart-icon-wrapper position-relative ms-3" style="cursor: pointer;" (click)="gotoPage('/store/cart')">
+  <i class="bi bi-cart3 fs-4 text-white"></i>
+  <span
+    class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+    style="font-size: 0.7rem; top: 30%;"
+  >
+    {{ cartCount }}
+  </span>
+</div>
+      <button
+      class="navbar-toggler"
+      type="button"
+(click)="isMenuCollapsed = !isMenuCollapsed"
+      [attr.aria-expanded]="!isMenuCollapsed"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-between" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/')"
+          >
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/about')"
+          >
+            About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/portfolio')"
+          >
+            Portfolio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/store')"
+          >
+            Store
+          </a>
+        </li>
+
+      </ul>
+      <button class="btn appoint-button">Get In Touch</button>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg fixed-top slide-top d-none d-lg-block">
+  <div class="container-fluid">
+
+     <div  class="collapse navbar-collapse justify-content-between" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/')"
+          >
+            Home
+          </a>
+        </li>
+       
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/portfolio')"
+          >
+            Portfolio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/portfolio')"
+          >
+            
+          </a>
+        </li>
+      
+      </ul>
+    </div>
+    <a class="navbar-brand" href="#">
+
+      <img
+        src="/images/benny-logo-white.png"
+        alt="Benny Hosea Logo White"
+        class="navbar-logo"
+      />
+    
+    </a>
+      <button
+      class="navbar-toggler"
+      type="button"
+      
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div  class="collapse navbar-collapse justify-content-between" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+         <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/store')"
+          >
+            Store
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="gotoPage('/about')"
+          >
+            About
+          </a>
+        </li>
+        <li>
+             <div class="cart-icon-wrapper position-relative ms-3" style="cursor: pointer;" (click)="gotoPage('/store/cart')">
+  <i class="bi bi-cart3 fs-4 text-white"></i>
+  <span
+    class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+    style="font-size: 0.7rem; top: 30%;"
+  >
+    {{ cartCount }}
+  </span>
+</div>
+
+        </li>
+       
+       
+      </ul>
+      <button class="btn appoint-button">Get In Touch</button>
+    </div>
+  </div>
+</nav>

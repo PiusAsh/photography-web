@@ -1,0 +1,90 @@
+<div class="qr-generator-container">
+  <h4>QR Code Generator</h4>
+
+  <div class="input-section">
+    <div class="input-group">
+      <textarea [(ngModel)]="qrdata"
+        placeholder="Enter link or text" style="height: 60px!important;" class="auth-input" id=""></textarea>
+    
+      <!-- <button class="btn-primary" (click)="generateQrCode()">Generate</button> -->
+    </div>
+  </div>
+
+  <div class="qr-code-display" *ngIf="qrdata">
+    <div class="qr-contain">
+  <qrcode 
+      [qrdata]="qrdata"
+      [width]="256"
+      [errorCorrectionLevel]="'M'"
+      (qrCodeURL)="onChangeURL($event)"
+    ></qrcode>
+    </div>
+  
+    <button class="btn-primary" (click)="downloadAsImage()" [disabled]="!qrCodeDownloadLink">
+      Download
+    </button>
+  </div>
+</div>
+<style>
+  .qr-contain {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: #ffffff; /* optional - to ensure clean white background */
+}
+
+.qr-generator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  margin: 2rem auto;
+  font-family: "Poppins", sans-serif;
+}
+
+.qr-generator-container h2 {
+  font-weight: 600;
+  color: #333;
+}
+
+.input-section {
+  width: 100%;
+}
+
+.input-group {
+  /* display: flex; */
+  width: 100%;
+}
+
+.qr-code-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qr-code-display qrcode {
+  /* padding: 0.75rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); */
+}
+
+
+@media (max-width: 480px) {
+  .qr-generator-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-success {
+    font-size: 0.9rem;
+  }
+}
+</style>
