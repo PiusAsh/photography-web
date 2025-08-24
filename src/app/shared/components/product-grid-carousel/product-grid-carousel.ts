@@ -14,6 +14,7 @@ export class ProductGridCarousel {
 
   selectProduct(product: Product) {
     this.productSelected.emit(product);
+    window.scrollTo(0, 0);
   }
 
   @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
