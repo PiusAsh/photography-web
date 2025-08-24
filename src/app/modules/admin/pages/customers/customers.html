@@ -1,0 +1,55 @@
+<div class="customers-container">
+  <h2>Customers</h2>
+
+  <div class="row">
+<div class="col-lg-4">
+   <div class="search-input-container">
+    <input type="text" placeholder="Search by name or email..." [(ngModel)]="searchTerm" (keyup.enter)="search()" (input)="onSearchInput()" />
+    <button (click)="search()"><i class="bi bi-search"></i></button>
+  </div>
+</div>
+<div class="col-lg-8"></div>
+  </div>
+ 
+
+  @if (customers.length === 0) {
+    <div class="no-customers">
+      <p>No customers found.</p>
+    </div>
+  } @else {
+    <div class="customers-list">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Last Purchased</th>
+            <th>Total Items</th>
+            <th>Total Spent</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (customer of customers; track customer.customer.email) {
+            <tr>
+              <td>{{ customer.customer.name }}</td>
+              <td><a style="text-decoration: none; color: var(--primary-color);" href="mailto:{{customer.customer.email}}">{{ customer.customer.email }}</a></td>
+              <td><a style="text-decoration: none; color: var(--primary-color);" href="tel:{{customer.customer.phone}}">{{ customer.customer.phone }}</a></td>
+              <td>{{ customer.lastPurchasedDate | date:'medium' }}</td>
+              <td>{{ customer.totalPurchasedItems }}</td>
+              <td>{{ customer.totalAmountSpent | currencyFormat }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (totalPages > 1) {
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+      <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+    </div>
+  }
+</div>

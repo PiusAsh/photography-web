@@ -39,7 +39,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
             }
           } else if (response?.status === true && request.method !== 'GET') {
             if (!this.shouldSkipAlert) {
-              this.showAlert('Operation successful', 'success');
+              this.showAlert('Successful', 'success');
             }
           }
         }

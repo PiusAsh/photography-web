@@ -1,0 +1,106 @@
+<div class="add-portfolio-container">
+  <div class="page-header border-bottom">
+    <div class="header-content">
+      <h1 class="page-title">
+        @if (isEditMode) {
+          Edit Portfolio Item
+        } @else {
+          Add Portfolio Items
+        }
+      </h1>
+      <p class="page-subtitle">Upload images and categorize them for your portfolio</p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Category Selection -->
+      <div class="form-card">
+        <div class="card-header">
+          <i class="bi bi-tags"></i>
+          <h3>Category Selection</h3>
+        </div>
+        <div class="card-content">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-tag"></i>
+              Select Category <span class="required">*</span>
+            </label>
+            <select class="form-input auth-input" [(ngModel)]="selectedCategory" [ngModelOptions]="{standalone: true}">
+              <option value="">-- Select a Category --</option>
+              @for (category of categories; track category) {
+                <option [value]="category">{{ category }}</option>
+              }
+            </select>
+            @if (!selectedCategory && portfolioForm.touched) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                Category is required.
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Upload Card -->
+      <div class="form-card mt-2">
+        <div class="card-header">
+          <i class="bi bi-images"></i>
+          <h3>Upload Images</h3>
+        </div>
+        <div class="card-content">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="bi bi-collection"></i>
+              Portfolio Images <span class="required">*</span>
+            </label>
+            <div class="image-upload-area"
+                 (click)="triggerFileInputClick()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)"
+                 [class.drag-over]="isDragOver">
+              <div class="upload-placeholder">
+                <i class="bi bi-cloud-upload"></i>
+                <p>Click to upload or drag & drop images</p>
+                <span>You can select multiple files</span>
+              </div>
+            </div>
+            <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" multiple accept="image/*">
+            
+            @if (imagePreviews.length === 0 && portfolioForm.touched) {
+              <div class="error-message">
+                <i class="bi bi-exclamation-circle"></i>
+                At least one image is required.
+              </div>
+            }
+
+            <div class="image-previews">
+              @for (preview of imagePreviews; track preview.url) {
+                <div class="image-preview-item">
+                  <img [src]="preview.url" alt="Image Preview" class="image-preview">
+                  <button type="button" class="btn-remove-image" (click)="removeImage($index)">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <button type="submit" class="btn-submit" [disabled]="portfolioForm.invalid || !selectedCategory || imagePreviews.length === 0">
+          <i class="bi bi-check-circle"></i>
+          @if (isEditMode) {
+            Update Portfolio
+          } @else {
+            Add to Portfolio
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

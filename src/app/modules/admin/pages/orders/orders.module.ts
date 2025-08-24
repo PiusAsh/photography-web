@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders.component';
+import { SharedModule } from '../../../../shared/shared-module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,6 +13,8 @@ import { OrdersComponent } from './orders.component';
   ],
   imports: [
     CommonModule,
+    SharedModule,
+    FormsModule,
     OrdersRoutingModule
   ]
 })

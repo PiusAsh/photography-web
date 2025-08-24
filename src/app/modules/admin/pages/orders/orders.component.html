@@ -1,39 +1,131 @@
 <div class="orders-container">
   <h2>Orders</h2>
 
-  <div *ngIf="orders.length === 0" class="no-orders">
-    <p>No orders found.</p>
-  </div>
+  @if (orders.length === 0) {
+    <div class="no-orders">
+      <p>No orders found.</p>
+    </div>
+  } @else {
+    <div class="orders-list">
+      <div class="table-responsive">
 
-  <div *ngIf="orders.length > 0" class="orders-list">
-    <div *ngFor="let order of orders" class="order-card">
-      <h3>Order ID: {{ order.id }}</h3>
-      <p><strong>Customer:</strong> {{ order.customer.name }} ({{ order.customer.email }})</p>
-      <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
-      <p><strong>Address:</strong> {{ order.customer.address }}</p>
-      <p><strong>Total Amount:</strong> {{ order.totalAmount | currency:'USD':'symbol':'1.2-2' }}</p>
-      <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
-      <p><strong>Payment Status:</strong> {{ order.paymentStatus }}</p>
-      <p><strong>Order Status:</strong> {{ order.orderStatus }}</p>
-      <p><strong>Order Date:</strong> {{ order.orderDate | date:'medium' }}</p>
-      <p><strong>Secret Code:</strong> {{ order.secretCode }}</p>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total Amount</th>
+              <th>Items</th>
+              <th>Status</th>
+              <th>Action</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of orders; track order.id) {
+              <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.orderDate | date:'medium' }}</td>
+                <td>
+                  <div>{{ order.customer.name }}</div>
+                  <small><a style="text-decoration: none; color: var(--primary-color);" href="mailto:{{order.customer.email}}">{{ order.customer.email }}</a> | <a style="text-decoration: none; color: var(--primary-color);" href="tel:{{order.customer.phone}}">{{ order.customer.phone }}</a></small>
+                </td>
+                <td>{{ order.totalAmount | currencyFormat }}</td>
+                <td>{{ order.items.length }}</td>
+                <td>
+                  <p class="status-badge text-center" [ngClass]="getOrderStatusClass(order.orderStatus)">
+                    {{ order.orderStatus }}
+                  </p>
+                </td>
+                <td>
+                  <button class="btn-view me-3" (click)="viewOrderDetails(order)">
+                    View Details
+                  </button>
+                    <button class="btn-view" style="background-color: var(--primary-color);" (click)="openUpdateStatusModal(order)">
+                    Update Status
+                  </button>
+                </td>
+               
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
 
-      <h4>Items:</h4>
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.productName || 'N/A' }} - Quantity: {{ item.quantity }} - Unit Price: {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
-          <div *ngIf="item.options">
-            <p *ngIf="item.options.size">Size: {{ item.options.size.name }} ({{ item.options.size.amount | currency:'USD':'symbol':'1.2-2' }})</p>
-            <p *ngIf="item.options.print">Print: {{ item.options.print.name }} ({{ item.options.print.amount | currency:'USD':'symbol':'1.2-2' }})</p>
-          </div>
-        </li>
-      </ul>
+  @if (totalPages > 1) {
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+      <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+    </div>
+  }
+</div>
+
+<!-- Order Details Modal -->
+@if (selectedOrder) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Order #{{ selectedOrder.id }}</h3>
+        <button class="btn-close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="order-items">
+          @for (item of selectedOrder.items; track item.productId) {
+            <div class="order-item">
+              <div class="item-image">
+                <img [src]="item.productImage" [alt]="item.productName" />
+              </div>
+              <div class="item-details">
+                <h4 class="item-name">{{ item.productName || 'N/A' }}</h4>
+                <div class="item-meta">
+                  <span class="item-quantity">Qty: {{ item.quantity }}</span>
+                  <span class="item-price">{{ item.unitPrice | currencyFormat }} each</span>
+                </div>
+                @if (item.options) {
+                  <div class="item-options">
+                    @if (item.options.size) {
+                      <p>Size: {{ item.options.size.name }} ({{ item.options.size.amount | currencyFormat }})</p>
+                    }
+                    @if (item.options.print) {
+                      <p>Print: {{ item.options.print.name }} ({{ item.options.print.amount | currencyFormat }})</p>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="item-total">
+                <span class="total-price">{{ (item.quantity * item.unitPrice) | currencyFormat }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
+}
 
-  <div *ngIf="totalPages > 1" class="pagination">
-    <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
-    <span>Page {{ pageNumber }} of {{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
+<!-- Update Status Modal -->
+@if (orderToUpdate) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Update Order Status</h3>
+        <button class="btn-close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Select a new status for order #{{ orderToUpdate.id }}</p>
+        <select class="form-control" [(ngModel)]="newStatus">
+          <option *ngFor="let status of availableStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="updateOrderStatus()">Update</button>
+      </div>
+    </div>
   </div>
-</div>
+}
+

@@ -13,6 +13,9 @@ import { AllProductsComponent } from './pages/all-products/all-products';
 import { EditProductComponent } from './pages/edit-product/edit-product.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomersComponent } from './pages/customers/customers';
+import { AddPortfolio } from './pages/add-portfolio/add-portfolio';
+import { PortfolioComponent } from './pages/portfolio/portfolio';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { HttpClientModule } from '@angular/common/http';
     AddProduct,
     DashboardComponent,
     AllProductsComponent,
-    EditProductComponent
+    EditProductComponent,
+    CustomersComponent,
+    AddPortfolio,
+    PortfolioComponent
   ],
   imports: [
     CommonModule,
