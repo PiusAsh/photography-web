@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  BASE_URL: 'https://server.bennyhosea.com/api/',
-  // BASE_URL: 'https://localhost:7028/api/',
+  // BASE_URL: 'https://server.bennyhosea.com/api/',
+  BASE_URL: 'https://localhost:7028/api/',
   PAYSTACK_KEY: 'pk_test_bc60a6e80c8aff6b1d63c2ab5fd789790f9be936',
   // PAYSTACK_KEY: 'pk_test_db114057f7e1e073f3bc5d5551869e8eef51b9b1',
   google_Client:

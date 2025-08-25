@@ -16,7 +16,7 @@ export class PortfolioService {
         const headers = new HttpHeaders().set('Skip-Alert', 'true');
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(this.uploadUrl, formData,  { headers });
+    return this.http.post('https://server.bennyhosea.com/api/Upload/image', formData,  { headers });
   }
 
   addPortfolio(portfolioData: any[]): Observable<any> {
