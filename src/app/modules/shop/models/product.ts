@@ -8,6 +8,7 @@ export interface Product {
   mainImage: string;
   size?: any;
   print?: any;
+  priceRange?: string;
 }
 
 export interface CartItem {

@@ -560,13 +560,14 @@
       gap: 1rem;
       
       span {
-        background: #f8f9fa;
-        color: #495057;
+        // background: #f8f9fa;
+        color: var(--primary-color);
         padding: 0.125rem 0.5rem;
         border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 500;
+        font-size: 0.85rem;
+        font-weight: 600!important;
       }
+     
     }
   }
   

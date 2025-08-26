@@ -44,7 +44,7 @@
             
             <div class="product-meta">
               <span class="product-year">{{ product.year }}</span>
-              <span class="product-price">{{ getPriceRange(product) }}</span>
+              <span class="product-price">{{ product.priceRange }}</span>
             </div>
             
             <div class="product-actions">
@@ -61,11 +61,11 @@
         <div class="empty-icon">
           <i class="bi bi-images"></i>
         </div>
-        <h3>No products found</h3>
-        <p>Try adjusting your search or filters</p>
+        <h3>No products found. Please check back later</h3>
+        <!-- <p>Try adjusting your search or filters</p>
         <button class="btn-reset-filters" (click)="searchTerm = ''; selectedCategory = ''; loadProducts()">
           Reset Filters
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

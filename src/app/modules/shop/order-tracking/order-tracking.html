@@ -249,6 +249,11 @@
                           <div class="item-meta">
                             <span class="item-quantity">Qty: {{ item.quantity }}</span>
                             <span class="item-price">{{ item.unitPrice  | currencyFormat }} each</span>
+
+                          </div>
+                          <div class="item-meta">
+                            <span class="item-options" *ngIf="item.options?.print?.name">Print: <small> {{ item.options.print.name }}</small></span>
+                            <span class="item-options" *ngIf="item.options?.size?.name">Size: {{ item.options.size.name }}</span>
                           </div>
                         </div>
                         <div class="item-total">

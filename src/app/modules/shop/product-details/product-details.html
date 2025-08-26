@@ -60,21 +60,26 @@
  
 
   <!-- Select Print -->
-  <div class="mb-2">
+  <div class="mb-2 slide-top">
     <label for="printSelect" class="form-label fw-semibold">Select Print</label>
     <select id="printSelect" class="auth-input" [(ngModel)]="selectedPrint" (change)="onSelectionChange()">
-      <option [ngValue]="null">Select an option</option>
-      <option *ngFor="let print of product?.print" [ngValue]="print">{{ print?.name }}</option>
+      <option [ngValue]="null">-- Select an option--</option>
+      <option *ngFor="let print of product?.print" [ngValue]="print">{{ print.name }}</option>
     </select>
   </div>
 
   <!-- Select Size -->
-  <div class="mb-2">
+  <div class="mb-2 slide-top" *ngIf="selectedPrint">
     <label for="sizeSelect" class="form-label fw-semibold">Select Size</label>
-    <select  id="sizeSelect" class="auth-input" [(ngModel)]="selectedSize" (change)="onSelectionChange()">
-      <option [ngValue]="null">Select an option</option>
-      <option *ngFor="let size of product?.size" [ngValue]="size">{{ size?.name }}</option>
+    <select id="sizeSelect" class= "auth-input" [(ngModel)]="selectedSize" (change)="onSelectionChange()">
+      <option [ngValue]="null">-- Select an option --</option>
+      <option *ngFor="let size of product?.size" [ngValue]="size">{{ size.name }}</option>
     </select>
+  </div>
+
+  <!-- Message to prompt user to select a print -->
+  <div *ngIf="!selectedPrint" class="alert alert-info slide-bottom">
+    Please select a print to see available sizes.
   </div>
 
   <!-- This block will only show after selections are made -->
@@ -117,8 +122,8 @@
   </ng-container>
 
   <!-- Message to prompt user to select options -->
-  <div *ngIf="!selectedPrint || !selectedSize" class="alert alert-info">
-    Please select a size and print to see the price and add to cart.
+  <div *ngIf="selectedPrint && !selectedSize" class="alert alert-info slide-bottom">
+    Please select a size to see the price and add to cart.
   </div>
 </div>
 
