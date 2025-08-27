@@ -18,6 +18,6 @@ export interface CartItem {
   displayPrice?: string;
   options?: {
     size: any;
-    print: any;
+    type: any;
   };
 }

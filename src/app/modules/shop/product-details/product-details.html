@@ -45,13 +45,7 @@
 <div class="col-md-5">
   <h2 class="fw-bold mt-4 mb-2">{{ product?.name }}</h2>
   <p class="text-muted">{{ product?.description }}</p>
- <!-- Price Range -->
-  <div class="mb-3">
-    <div class="d-flex align-items-center gap-2">
-      <span class="text-muted">Price Range:</span>
-      <span class="fw-bold" style="font-size: 20px!important;">{{ priceRange }}</span>
-    </div>
-  </div>
+ 
   <ul class="list-unstyled d-flex gap-3 mb-2 small">
     <li><strong>Year:</strong> {{ product?.year }}</li>
     <!-- <li><strong>Images:</strong> {{ product?.images?.length }} photos</li> -->
@@ -59,40 +53,40 @@
 
  
 
-  <!-- Select Print -->
+  <!-- Select Type -->
   <div class="mb-2 slide-top">
-    <label for="printSelect" class="form-label fw-semibold">Select Print</label>
-    <select id="printSelect" class="auth-input" [(ngModel)]="selectedPrint" (change)="onSelectionChange()">
-      <option [ngValue]="null">-- Select an option--</option>
-      <option *ngFor="let print of product?.print" [ngValue]="print">{{ print.name }}</option>
+    <label for="typeSelect" class="form-label fw-semibold">Select Type</label>
+    <select id="typeSelect" class="auth-input" [(ngModel)]="selectedType" (change)="onTypeChange()">
+      <option [ngValue]="null">-- Select a Type --</option>
+      <option *ngFor="let type of uniqueTypes" [ngValue]="type">{{ type }}</option>
     </select>
   </div>
 
   <!-- Select Size -->
-  <div class="mb-2 slide-top" *ngIf="selectedPrint">
+  <div class="mb-2 slide-top" *ngIf="selectedType">
     <label for="sizeSelect" class="form-label fw-semibold">Select Size</label>
-    <select id="sizeSelect" class= "auth-input" [(ngModel)]="selectedSize" (change)="onSelectionChange()">
-      <option [ngValue]="null">-- Select an option --</option>
-      <option *ngFor="let size of product?.size" [ngValue]="size">{{ size.name }}</option>
+    <select id="sizeSelect" class="auth-input" [(ngModel)]="selectedSize" (change)="onSizeChange()">
+      <option [ngValue]="null">-- Select a Size --</option>
+      <option *ngFor="let size of availableSizes" [ngValue]="size">{{ size }}</option>
     </select>
   </div>
 
-  <!-- Message to prompt user to select a print -->
-  <div *ngIf="!selectedPrint" class="alert alert-info slide-bottom">
-    Please select a print to see available sizes.
+  <!-- Message to prompt user to select a type -->
+  <div *ngIf="!selectedType" class="alert alert-info slide-bottom">
+    Please select a type to see available sizes.
   </div>
 
   <!-- This block will only show after selections are made -->
-  <ng-container *ngIf="selectedPrint && selectedSize">
+  <ng-container *ngIf="selectedType && selectedSize">
     <!-- Calculated Price -->
     <div class="mb-2">
       <div class="d-flex align-items-center gap-3">
         <span class="text-muted">Unit Price:</span>
-        <span class="fw-bold">{{ calculatedAmount | currencyFormat }}</span>
+        <span class="fw-bold">{{ currentPrice | currencyFormat }}</span>
       </div>
       <div class="d-flex align-items-center gap-3" *ngIf="quantity > 1">
         <span class="text-muted">Total Price:</span>
-        <span class="fw-bold text-dark fs-5">{{ (calculatedAmount * quantity) | currencyFormat }}</span>
+        <span class="fw-bold text-dark fs-5">{{ (currentPrice * quantity) | currencyFormat }}</span>
       </div>
     </div>
 
@@ -122,7 +116,7 @@
   </ng-container>
 
   <!-- Message to prompt user to select options -->
-  <div *ngIf="selectedPrint && !selectedSize" class="alert alert-info slide-bottom">
+  <div *ngIf="selectedType && !selectedSize" class="alert alert-info slide-bottom">
     Please select a size to see the price and add to cart.
   </div>
 </div>

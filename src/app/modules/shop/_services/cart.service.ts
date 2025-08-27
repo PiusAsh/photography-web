@@ -25,15 +25,15 @@ export class CartService {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cart));
   }
 
-  findItemInCart(productId: string, options: { size: any, print: any }): CartItem | undefined {
+  findItemInCart(productId: string, options: { type: any, size: any }): CartItem | undefined {
     return this.cart.find(item => 
       item.product.id === productId &&
-      item.options?.size.name === options.size.name &&
-      item.options?.print.name === options.print.name
+      item.options?.type === options.type &&
+      item.options?.size === options.size
     );
   }
 
-  addToCart(product: Product, quantity: number, options: { size: any, print: any }) {
+  addToCart(product: Product, quantity: number, options: { type: any, size: any }) {
     const existingItem = this.findItemInCart(product.id, options);
 
     if (existingItem) {
@@ -55,12 +55,12 @@ export class CartService {
     this.toast.success(`${product.name} added to cart.`);
   }
 
-  removeFromCart(productId: string, options: { size: any, print: any }) {
+  removeFromCart(productId: string, options: { type: any, size: any }) {
     const initialCartLength = this.cart.length;
     const updatedCart = this.cart.filter(item => 
       !(item.product.id === productId && 
-        item.options?.size.name === options.size.name && 
-        item.options?.print.name === options.print.name)
+        item.options?.type === options.type && 
+        item.options?.size === options.size)
     );
 
     if (updatedCart.length < initialCartLength) {
@@ -78,12 +78,12 @@ export class CartService {
     // this.toast.success('Cart cleared.');
   }
 
-  updateQuantity(productId: string, quantity: number, options: { size: any, print: any }) {
+  updateQuantity(productId: string, quantity: number, options: { type: any, size: any }) {
     const cartCopy = [...this.cart];
     const itemIndex = cartCopy.findIndex(item => 
       item.product.id === productId &&
-      item.options?.size.name === options.size.name &&
-      item.options?.print.name === options.print.name
+      item.options?.type === options.type &&
+      item.options?.size === options.size
     );
 
     if (itemIndex === -1) {

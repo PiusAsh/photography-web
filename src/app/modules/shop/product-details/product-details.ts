@@ -20,10 +20,12 @@ export class ProductDetails implements OnInit, OnDestroy {
   selectedImage: string = '';
   quantity = 1;
   suggestedProducts: Product[] = [];
-  selectedPrint: any | null = null;
-  selectedSize: any | null = null;
-  calculatedAmount = 0;
-  priceRange = '';
+
+  uniqueTypes: any;
+  availableSizes: any;
+  selectedType: string | null = null;
+  selectedSize: string | null = null;
+  currentPrice: number = 0;
 
   private routeSub: Subscription | undefined;
   private cartSub: Subscription | undefined;
@@ -49,7 +51,7 @@ export class ProductDetails implements OnInit, OnDestroy {
     });
 
     this.cartSub = this.cartService.cart$.subscribe(() => {
-      this.onSelectionChange();
+      this.updateCalculatedPrice();
     });
   }
 
@@ -64,7 +66,7 @@ export class ProductDetails implements OnInit, OnDestroy {
         if (response?.data) {
           this.product = response.data;
           this.selectedImage = this.product?.mainImage || '';
-          this.buildPriceRange();
+          this.populateTypes();
           this.loadSuggestedProducts();
           this.resetSelectionsAndState();
         } else {
@@ -79,37 +81,67 @@ export class ProductDetails implements OnInit, OnDestroy {
   }
 
   private resetSelectionsAndState(): void {
-    this.selectedPrint = null;
+    this.selectedType = null;
     this.selectedSize = null;
-    this.calculatedAmount = 0;
+    this.currentPrice = 0;
     this.quantity = 1;
   }
 
-  onSelectionChange(): void {
-    if (this.selectedPrint && this.selectedSize) {
-      this.calculatedAmount = this.selectedPrint.amount + this.selectedSize.amount;
-      const cartItem = this.cartService.findItemInCart(this.product.id, { size: this.selectedSize, print: this.selectedPrint });
-      this.quantity = cartItem ? cartItem.quantity : 1;
-    } else {
-      this.calculatedAmount = 0;
-      this.quantity = 1;
+  populateTypes(): void {
+    if (this.product?.variants) {
+      this.uniqueTypes = [...new Set(this.product.variants.map((v: { type: any; }) => v.type))];
     }
   }
 
+  onTypeChange(): void {
+    this.selectedSize = null; // Reset size when type changes
+    this.currentPrice = 0; // Reset price
+    this.availableSizes = [];
+
+    if (this.selectedType && this.product?.variants) {
+      const filteredVariants = this.product.variants.filter((v: { type: string | null; }) => v.type === this.selectedType);
+      this.availableSizes = [...new Set(filteredVariants.map((v: { size: any; }) => v.size))];
+    }
+    this.updateCalculatedPrice();
+  }
+
+  onSizeChange(): void {
+    this.updateCalculatedPrice();
+  }
+
+  updateCalculatedPrice(): void {
+    if (this.selectedType && this.selectedSize && this.product?.variants) {
+      const matchingVariant = this.product.variants.find(
+        (v: { type: string | null; size: string | null; }) => v.type === this.selectedType && v.size === this.selectedSize
+      );
+      if (matchingVariant) {
+        this.currentPrice = matchingVariant.price;
+      } else {
+        this.currentPrice = 0;
+      }
+    } else {
+      this.currentPrice = 0;
+    }
+    const cartItem = this.cartService.findItemInCart(this.product.id, { type: this.selectedType, size: this.selectedSize });
+    this.quantity = cartItem ? cartItem.quantity : 1;
+  }
+
   isCurrentSelectionInCart(): boolean {
-    if (this.product && this.selectedPrint && this.selectedSize) {
-      return !!this.cartService.findItemInCart(this.product.id, { size: this.selectedSize, print: this.selectedPrint });
+    if (this.product && this.selectedType && this.selectedSize) {
+      return !!this.cartService.findItemInCart(this.product.id, { type: this.selectedType, size: this.selectedSize });
     }
     return false;
   }
 
   addToCart(): void {
-    if (this.product && this.selectedPrint && this.selectedSize) {
-      const productToAdd = { ...this.product, price: this.calculatedAmount };
+    if (this.product && this.selectedType && this.selectedSize && this.currentPrice > 0) {
+      const productToAdd = { ...this.product, price: this.currentPrice };
       this.cartService.addToCart(productToAdd, this.quantity, {
-        size: this.selectedSize,
-        print: this.selectedPrint
+        type: this.selectedType,
+        size: this.selectedSize
       });
+    } else {
+      this.toast.info('Please select a Type and Size.');
     }
   }
 
@@ -123,13 +155,13 @@ export class ProductDetails implements OnInit, OnDestroy {
     }
 
     if (this.quantity !== originalQuantity && this.isCurrentSelectionInCart()) {
-      this.cartService.updateQuantity(this.product.id, this.quantity, { size: this.selectedSize, print: this.selectedPrint });
+      this.cartService.updateQuantity(this.product.id, this.quantity, { type: this.selectedType, size: this.selectedSize });
     }
   }
 
   getCartQuantity(): number {
-    if (this.product && this.selectedPrint && this.selectedSize) {
-      const cartItem = this.cartService.findItemInCart(this.product.id, { size: this.selectedSize, print: this.selectedPrint });
+    if (this.product && this.selectedType && this.selectedSize) {
+      const cartItem = this.cartService.findItemInCart(this.product.id, { type: this.selectedType, size: this.selectedSize });
       return cartItem ? cartItem.quantity : 0;
     }
     return 0;
@@ -166,20 +198,5 @@ export class ProductDetails implements OnInit, OnDestroy {
     const container = this.thumbnailContainer.nativeElement;
     const scrollAmount = 150;
     container.scrollLeft += (direction === 'left' ? -scrollAmount : scrollAmount);
-  }
-
-  buildPriceRange(): void {
-    const sizes = this.product?.size || [];
-    const prints = this.product?.print || [];
-
-    if (sizes.length > 0 && prints.length > 0) {
-      const sizeAmounts = sizes.map((s: { amount: any; }) => s.amount);
-      const printAmounts = prints.map((p: { amount: any; }) => p.amount);
-      const minPrice = Math.min(...sizeAmounts) + Math.min(...printAmounts);
-      const maxPrice = Math.max(...sizeAmounts) + Math.max(...printAmounts);
-      this.priceRange = `₦${minPrice.toLocaleString()} – ₦${maxPrice.toLocaleString()}`;
-    } else {
-      this.priceRange = 'N/A';
-    }
   }
 }
