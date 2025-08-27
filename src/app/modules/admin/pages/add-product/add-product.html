@@ -30,17 +30,7 @@
                 Product name is required.
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">
-                <i class="bi bi-currency-dollar"></i>
-                Price <span class="required">*</span>
-              </label>
-              <input type="number" class="form-input" formControlName="price" placeholder="Enter price">
-              <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="error-message">
-                <i class="bi bi-exclamation-circle"></i>
-                Price is required.
-              </div>
-            </div>
+            
           </div>
           
           <div class="form-group">
@@ -69,75 +59,50 @@
         </div>
       </div>
 
-      <!-- Sizes Card -->
+      
+
+      <!-- Variants Card -->
       <div class="form-card mt-2 mb-2">
         <div class="card-header">
-          <i class="bi bi-arrows-angle-expand"></i>
-          <h3>Product Sizes</h3>
+          <i class="bi bi-box"></i>
+          <h3>Product Variants</h3>
         </div>
         <div class="card-content">
-          <div formArrayName="size">
-            <div *ngFor="let sizeControl of size.controls; let i=index" [formGroupName]="i" class="dynamic-item">
+          <div formArrayName="variants">
+            <div *ngFor="let variantControl of variants.controls; let i=index" [formGroupName]="i" class="dynamic-item">
               <div class="item-inputs">
                 <div class="form-group">
-                  <input class="form-input" formControlName="name" placeholder="Size name (e.g., Regular: 20 x 20)">
-                  <div *ngIf="sizeControl.get('name')?.invalid && sizeControl.get('name')?.touched" class="error-message">
+                  <label class="form-label">Price <span class="required">*</span></label>
+                  <input type="number" class="form-input" formControlName="price" placeholder="Price">
+                  <div *ngIf="variantControl.get('price')?.invalid && variantControl.get('price')?.touched" class="error-message">
                     <i class="bi bi-exclamation-circle"></i>
-                    Size name is required.
+                    Price is required.
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="number" class="form-input" formControlName="amount" placeholder="Amount">
-                  <div *ngIf="sizeControl.get('amount')?.invalid && sizeControl.get('amount')?.touched" class="error-message">
+                  <label class="form-label">Type <span class="required">*</span></label>
+                  <input class="form-input" formControlName="type" placeholder="Type (e.g., Canvas, Print)">
+                  <div *ngIf="variantControl.get('type')?.invalid && variantControl.get('type')?.touched" class="error-message">
                     <i class="bi bi-exclamation-circle"></i>
-                    Amount is required.
+                    Type is required.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Size <span class="required">*</span></label>
+                  <input class="form-input" formControlName="size" placeholder="Size (e.g., 20x20, A4)">
+                  <div *ngIf="variantControl.get('size')?.invalid && variantControl.get('size')?.touched" class="error-message">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Size is required.
                   </div>
                 </div>
               </div>
-              <button type="button" class="btn-remove" (click)="removeSize(i)">
+              <button type="button" class="btn-remove" (click)="removeVariant(i)">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
-            <button type="button" class="btn-add" (click)="addSize()">
+            <button type="button" class="btn-add" (click)="addVariant()">
               <i class="bi bi-plus"></i>
-              Add Size
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prints Card -->
-      <div class="form-card mb-2">
-        <div class="card-header">
-          <i class="bi bi-printer"></i>
-          <h3>Print Options</h3>
-        </div>
-        <div class="card-content">
-          <div formArrayName="print">
-            <div *ngFor="let printControl of print.controls; let i=index" [formGroupName]="i" class="dynamic-item">
-              <div class="item-inputs">
-                <div class="form-group">
-                  <input class="form-input" formControlName="name" placeholder="Print type (e.g., Canvas)">
-                  <div *ngIf="printControl.get('name')?.invalid && printControl.get('name')?.touched" class="error-message">
-                    <i class="bi bi-exclamation-circle"></i>
-                    Print name is required.
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="number" class="form-input" formControlName="amount" placeholder="Amount">
-                  <div *ngIf="printControl.get('amount')?.invalid && printControl.get('amount')?.touched" class="error-message">
-                    <i class="bi bi-exclamation-circle"></i>
-                    Amount is required.
-                  </div>
-                </div>
-              </div>
-              <button type="button" class="btn-remove" (click)="removePrint(i)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-            <button type="button" class="btn-add" (click)="addPrint()">
-              <i class="bi bi-plus"></i>
-              Add Print
+              Add Variant
             </button>
           </div>
         </div>

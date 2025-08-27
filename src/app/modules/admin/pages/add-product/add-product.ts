@@ -35,51 +35,31 @@ export class AddProduct implements OnInit {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: [''],
       year: ['', Validators.required],
-      size: this.fb.array([this.createSize()]),
-      print: this.fb.array([this.createPrint()]),
       mainImage: [''],
-      images: this.fb.array([])
+      images: this.fb.array([]),
+      variants: this.fb.array([this.createVariant()])
     });
   }
 
-  createSize(): FormGroup {
+  createVariant(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      amount: ['', Validators.required]
+      price: ['', Validators.required],
+      type: ['', Validators.required],
+      size: ['', Validators.required]
     });
   }
 
-  createPrint(): FormGroup {
-    return this.fb.group({
-      name: ['', Validators.required],
-      amount: ['', Validators.required]
-    });
+  get variants(): FormArray {
+    return this.productForm.get('variants') as FormArray;
   }
 
-  get size(): FormArray {
-    return this.productForm.get('size') as FormArray;
+  addVariant(): void {
+    this.variants.push(this.createVariant());
   }
 
-  get print(): FormArray {
-    return this.productForm.get('print') as FormArray;
-  }
-
-  addSize(): void {
-    this.size.push(this.createSize());
-  }
-
-  addPrint(): void {
-    this.print.push(this.createPrint());
-  }
-
-  removeSize(index: number): void {
-    this.size.removeAt(index);
-  }
-
-  removePrint(index: number): void {
-    this.print.removeAt(index);
+  removeVariant(index: number): void {
+    this.variants.removeAt(index);
   }
 
   onFileSelected(event: Event): void {
@@ -197,7 +177,8 @@ export class AddProduct implements OnInit {
         if (type === 'main') {
           this.productForm.patchValue({ mainImage: response?.data.imageUrl });
           console.log('Main image uploaded:', response?.data?.imageUrl);
-        } else {
+        }
+        else {
           const imagesFormArray = this.productForm.get('images') as FormArray;
           imagesFormArray.push(this.fb.control(response?.data?.imageUrl));
           console.log('Image uploaded:', response?.data?.imageUrl);
@@ -240,7 +221,7 @@ export class AddProduct implements OnInit {
         },
         error => {
           console.error('Error creating product:', error);
-          this.toast.danger('Failed to create product. Please try again.',);
+          this.toast.danger('Failed to create product. Please try again.');
         }
       );
     }
