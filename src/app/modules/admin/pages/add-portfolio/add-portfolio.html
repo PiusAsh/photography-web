@@ -76,12 +76,31 @@
               </div>
             }
 
+              <!-- Overall Upload Progress -->
+      <div class="form-card mt-2" *ngIf="uploadInProgress">
+        <div class="card-header">
+          <i class="bi bi-upload"></i>
+          <h3>Uploading Images...</h3>
+        </div>
+        <div class="card-content">
+          <div class="progress-bar-container">
+            <!-- <div class="progress-bar" [style.width.%]="overallProgress">
+              <span>{{ overallProgress }}%</span>
+            </div> -->
+          </div>
+          <p class="text-center mt-2">{{ overallProgress }}% Complete</p>
+        </div>
+      </div>
             <div class="image-previews">
               @for (preview of imagePreviews; track preview.url; let i = $index) {
-                <div class="image-preview-item">
+                <div class="image-preview-item" [class.upload-error]="uploads[i]?.error">
                   <img [src]="preview.url" alt="Image Preview" class="image-preview">
-                  <div class="progress-bar-container" *ngIf="uploads[i] && uploads[i].progress < 100">
+                  <div class="progress-bar-container" *ngIf="uploads[i] && uploads[i].progress < 100 && !uploads[i]?.error">
                     <div class="progress-bar" [style.width.%]="uploads[i].progress"></div>
+                  </div>
+                  <div class="error-overlay" *ngIf="uploads[i]?.error">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span>Failed</span>
                   </div>
                   <button type="button" class="btn-remove-image" (click)="removeImage(i)">
                     <i class="bi bi-x"></i>
@@ -93,9 +112,11 @@
         </div>
       </div>
 
+    
+
       <!-- Submit Button -->
       <div class="submit-section">
-        <button type="submit" class="btn-submit" [disabled]="portfolioForm.invalid || !selectedCategory || imagePreviews.length === 0">
+        <button type="submit" class="btn-submit" [disabled]="portfolioForm.invalid || !selectedCategory || imagePreviews.length === 0 || uploadInProgress">
           <i class="bi bi-check-circle"></i>
           @if (isEditMode) {
             Update Portfolio

@@ -17,13 +17,16 @@ export class AddPortfolio implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   portfolioForm!: FormGroup;
-  imagePreviews: { url: string, imageUrl?: string }[] = []; // no raw File kept
-  uploads: { progress: number, url?: string }[] = [];
+  imagePreviews: { url: string, imageUrl?: string }[] = [];
+  uploads: { progress: number, url?: string, error?: boolean }[] = [];
   isDragOver = false;
   categories: any;
   selectedCategory: string = '';
   isEditMode: boolean = false;
   portfolioItemId: string | null = null;
+  uploadInProgress: boolean = false;
+  overallProgress: number = 0;
+  totalFiles: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -98,90 +101,63 @@ loadCategories(): void {
     }
   }
 
-  // private handleFiles(files: File[]): void {
-  //   files.forEach((file) => {
-  //     if (!file.type.startsWith('image/')) return;
-
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       // show local preview first
-  //       this.imagePreviews.push({ url: reader.result as string });
-  //       this.uploads.push({ progress: 0 });
-  //       this.uploadFile(file, this.imagePreviews.length - 1);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
-  // }
   private handleFiles(files: File[]): void {
-  files.forEach((file) => {
-    if (!file.type.startsWith('image/')) return;
+    this.uploadInProgress = true;
+    this.overallProgress = 0;
+    this.totalFiles = files.length;
+    let processedFiles = 0;
 
-    // Use object URL for fast preview (no base64 memory overhead)
-    const previewUrl = URL.createObjectURL(file);
+    files.forEach((file) => {
+      if (!file.type.startsWith('image/')) return;
 
-    this.imagePreviews.push({ url: previewUrl });
-    this.uploads.push({ progress: 0 });
+      const previewUrl = URL.createObjectURL(file);
+      this.imagePreviews.push({ url: previewUrl });
+      this.uploads.push({ progress: 0, error: false });
 
-    this.uploadFile(file, this.imagePreviews.length - 1);
-  });
-}
+      this.uploadFile(file, this.imagePreviews.length - 1, () => {
+        processedFiles++;
+        this.overallProgress = Math.round((processedFiles / this.totalFiles) * 100);
+        if (processedFiles === this.totalFiles) {
+          this.uploadInProgress = false;
+        }
+      });
+    });
+  }
 
-
-  // private uploadFile(file: File, index: number): void {
-  //   this.portfolioService.uploadImage(file).subscribe({
-  //     next: (event: HttpEvent<any>) => {
-  //       switch (event.type) {
-  //         case HttpEventType.UploadProgress:
-  //           if (event.total) {
-  //             this.uploads[index].progress = Math.round(100 * (event.loaded / event.total));
-  //           }
-  //           break;
-  //         case HttpEventType.Response:
-  //           const imageUrl = event.body?.data?.imageUrl;
-  //           if (imageUrl) {
-  //             // replace preview URL with uploaded one
-  //             this.imagePreviews[index].url = imageUrl;
-  //             this.imagePreviews[index].imageUrl = imageUrl;
-  //             this.uploads[index].url = imageUrl;
-
-  //             // add to form
-  //             this.images.push(this.fb.control(imageUrl));
-  //           }
-  //           break;
-  //       }
-  //     },
-  //     error: () => {
-  //       this.removeImage(index);
-  //     }
-  //   });
-  // }
-private uploadFile(file: File, index: number): void {
-  this.clondinaryService.uploadImage(file).subscribe({
-    next: (event) => {
-      if (typeof event === 'number') {
-        // progress
-        this.uploads[index].progress = event;
-      } else if (typeof event === 'string') {
-        // Cloudinary final URL
-        const imageUrl = event;
-        this.imagePreviews[index].url = imageUrl;
-        this.imagePreviews[index].imageUrl = imageUrl;
-        this.uploads[index].url = imageUrl;
-
-        // add to form
-        this.images.push(this.fb.control(imageUrl));
+  private uploadFile(file: File, index: number, callback: () => void): void {
+    this.clondinaryService.uploadImage(file).subscribe({
+      next: (event) => {
+        if (typeof event === 'number') {
+          this.uploads[index].progress = event;
+        } else if (typeof event === 'string') {
+          const imageUrl = event;
+          this.imagePreviews[index].url = imageUrl;
+          this.imagePreviews[index].imageUrl = imageUrl;
+          this.uploads[index].url = imageUrl;
+          this.images.push(this.fb.control(imageUrl));
+          callback();
+        }
+      },
+      error: () => {
+        this.toast.danger(`Failed to upload ${file.name}.`);
+        this.uploads[index].error = true;
+        this.uploads[index].progress = 100; // Mark as complete to remove progress bar
+        callback();
       }
-    },
-    error: () => {
-      this.removeImage(index);
-    }
-  });
-}
+    });
+  }
 
   removeImage(index: number): void {
+    const removedImageUrl = this.imagePreviews[index].imageUrl;
     this.imagePreviews.splice(index, 1);
     this.uploads.splice(index, 1);
-    this.images.removeAt(index);
+
+    if (removedImageUrl) {
+      const imageIndexInForm = this.images.controls.findIndex(control => control.value === removedImageUrl);
+      if (imageIndexInForm > -1) {
+        this.images.removeAt(imageIndexInForm);
+      }
+    }
   }
 
   private loadPortfolioItem(id: string): void {
@@ -190,8 +166,6 @@ private uploadFile(file: File, index: number): void {
         if (response.status && response.data) {
           const item = response.data;
           this.selectedCategory = item.category;
-
-          // load existing image
           this.imagePreviews = [{ url: item.imageUrl, imageUrl: item.imageUrl }];
           this.uploads = [{ progress: 100, url: item.imageUrl }];
           this.images.push(this.fb.control(item.imageUrl));
@@ -206,6 +180,10 @@ private uploadFile(file: File, index: number): void {
   }
 
   onSubmit(): void {
+    if (this.uploadInProgress) {
+      this.toast.info('Please wait for the image uploads to complete.');
+      return;
+    }
     if (this.portfolioForm.invalid || !this.selectedCategory) {
       return;
     }
