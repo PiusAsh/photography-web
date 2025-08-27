@@ -1,10 +1,7 @@
 <div class="portfolio-container">
- <div class="page-header border-bottom">
+  <div class="page-header border-bottom">
     <div class="header-content">
-      <h1 class="page-title">
-
-        All Portfolio
-      </h1>
+      <h1 class="page-title">All Portfolio</h1>
       <p class="page-subtitle">Manage your portfolio</p>
     </div>
     <div class="header-actions">
@@ -14,13 +11,26 @@
       </button>
     </div>
   </div>
-  @if (portfolioItems.length === 0) {
+
+  <ul class="nav nav-pills justify-content-center portfolio-tabs">
+    <li class="nav-item" *ngFor="let cat of categories">
+      <button
+        class="nav-link"
+        [class.active]="selectedCategory === cat.name"
+        (click)="selectCategory(cat.name)"
+      >
+        {{ cat.name }}
+      </button>
+    </li>
+  </ul>
+
+  @if (filteredPortfolioItems.length === 0) {
     <div class="no-items">
       <p>No portfolio items found.</p>
     </div>
   } @else {
     <div class="portfolio-grid">
-      @for (item of portfolioItems; track item.id) {
+      @for (item of filteredPortfolioItems; track item.id) {
         <div class="portfolio-card">
           <img [src]="item.imageUrl" [alt]="item.category" class="portfolio-image">
           <div class="portfolio-info">
@@ -35,14 +45,6 @@
           </div>
         </div>
       }
-    </div>
-  }
-
-  @if (totalPages > 1) {
-    <div class="pagination">
-      <button (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
-      <span>Page {{ pageNumber }} of {{ totalPages }}</span>
-      <button (click)="nextPage()" [disabled]="pageNumber === totalPages">Next</button>
     </div>
   }
 </div>

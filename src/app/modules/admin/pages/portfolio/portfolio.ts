@@ -10,11 +10,10 @@ import { Router } from '@angular/router';
   styleUrl: './portfolio.scss'
 })
 export class PortfolioComponent implements OnInit {
-  portfolioItems: any[] = [];
-  pageNumber: number = 1;
-  pageSize: number = 10; // Default page size
-  totalPages: number = 1;
-  totalCount: number = 0;
+  allPortfolioItems: any[] = [];
+  filteredPortfolioItems: any[] = [];
+  categories: any[] = [];
+  selectedCategory: string = 'All';
 
   constructor(
     private portfolioService: PortfolioService,
@@ -23,27 +22,45 @@ export class PortfolioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPortfolioItems();
+    this.loadCategories();
+    this.loadAllPortfolioItems();
   }
 
-  getPortfolioItems(): void {
-    this.portfolioService.getPortfolioItems(this.pageNumber, this.pageSize, '').subscribe({
+  loadCategories(): void {
+    this.portfolioService.getAllCategories().subscribe({
       next: (response) => {
-        if (response.status) {
-          this.portfolioItems = response.data.items;
-          this.pageNumber = response.data.pageNumber;
-          this.pageSize = response.data.pageSize;
-          this.totalPages = response.data.totalPages;
-          this.totalCount = response.data.totalCount;
-        } else {
-          // this.toast.danger({ detail: 'ERROR', summary: response.errorMessage || 'Failed to fetch portfolio items.', duration: 5000 });
+        if (response.status && response.data) {
+          this.categories = [{ name: 'All' }, ...response.data];
         }
-      },
-      error: (err) => {
-        console.error('Error fetching portfolio items:', err);
-        // this.toast.danger({ detail: 'ERROR', summary: 'An error occurred while fetching portfolio items.', duration: 5000 });
       }
     });
+  }
+
+  loadAllPortfolioItems(): void {
+    // Assuming getPortfolioItems with a large page size fetches all items.
+    // This might need adjustment based on the actual service implementation.
+    this.portfolioService.getPortfolioItems(1, 1000, '').subscribe({
+      next: (response) => {
+        if (response.status) {
+          this.allPortfolioItems = response.data.items;
+          this.filterPortfolioItems();
+        }
+      }
+    });
+  }
+
+  filterPortfolioItems(): void {
+    if (this.selectedCategory === 'All') {
+      this.filteredPortfolioItems = this.allPortfolioItems;
+    } else {
+      this.filteredPortfolioItems = this.allPortfolioItems.filter(item => item.category === this.selectedCategory);
+      console.log(this.filteredPortfolioItems, this.selectedCategory, 'test');
+    }
+  }
+
+  selectCategory(categoryName: string): void {
+    this.selectedCategory = categoryName;
+    this.filterPortfolioItems();
   }
 
   deletePortfolioItem(id: string): void {
@@ -51,15 +68,8 @@ export class PortfolioComponent implements OnInit {
       this.portfolioService.deletePortfolioItem(id).subscribe({
         next: (response) => {
           if (response.status) {
-            // this.toast.success({ detail: 'SUCCESS', summary: 'Item deleted successfully!', duration: 5000 });
-            this.getPortfolioItems(); // Refresh the list
-          } else {
-            // this.toast.danger({ detail: 'ERROR', summary: response.errorMessage || 'Failed to delete item.', duration: 5000 });
+            this.loadAllPortfolioItems(); // Refresh the list
           }
-        },
-        error: (err) => {
-          console.error('Error deleting portfolio item:', err);
-          // this.toast.danger({ detail: 'ERROR', summary: 'An error occurred while deleting item.', duration: 5000 });
         }
       });
     }
@@ -67,19 +77,5 @@ export class PortfolioComponent implements OnInit {
 
   editPortfolioItem(id: string): void {
     this.router.navigate(['/app/edit-portfolio', id]);
-  }
-
-  nextPage(): void {
-    if (this.pageNumber < this.totalPages) {
-      this.pageNumber++;
-      this.getPortfolioItems();
-    }
-  }
-
-  prevPage(): void {
-    if (this.pageNumber > 1) {
-      this.pageNumber--;
-      this.getPortfolioItems();
-    }
   }
 }
