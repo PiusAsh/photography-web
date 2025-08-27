@@ -77,10 +77,13 @@
             }
 
             <div class="image-previews">
-              @for (preview of imagePreviews; track preview.url) {
+              @for (preview of imagePreviews; track preview.url; let i = $index) {
                 <div class="image-preview-item">
                   <img [src]="preview.url" alt="Image Preview" class="image-preview">
-                  <button type="button" class="btn-remove-image" (click)="removeImage($index)">
+                  <div class="progress-bar-container" *ngIf="uploads[i] && uploads[i].progress < 100">
+                    <div class="progress-bar" [style.width.%]="uploads[i].progress"></div>
+                  </div>
+                  <button type="button" class="btn-remove-image" (click)="removeImage(i)">
                     <i class="bi bi-x"></i>
                   </button>
                 </div>

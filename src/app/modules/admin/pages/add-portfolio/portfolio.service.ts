@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../../public/environment/environment';
 
@@ -8,16 +8,27 @@ import { environment } from '../../../../../../public/environment/environment';
 })
 export class PortfolioService {
   private apiUrl = `${environment.BASE_URL}Portfolio`;
-  private uploadUrl = `${environment.BASE_URL}Upload/image`; // Assuming a generic image upload endpoint
+  private uploadUrl = `https://server.bennyhosea.com/api/Upload/image`;
 
   constructor(private http: HttpClient) { }
 
-  uploadImage(file: File): Observable<any> {
-        const headers = new HttpHeaders().set('Skip-Alert', 'true');
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post('https://server.bennyhosea.com/api/Upload/image', formData,  { headers });
-  }
+
+ uploadImage(file: File): Observable<HttpEvent<any>> {
+  const headers = new HttpHeaders().set('Skip-Alert', 'true');
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  return this.http.post<HttpEvent<any>>(
+    `${this.uploadUrl}`,
+    formData,
+    {
+      headers,
+      reportProgress: true,
+      observe: 'events'
+    }
+  );
+}
 
   addPortfolio(portfolioData: any[]): Observable<any> {
     return this.http.post(this.apiUrl, portfolioData);
