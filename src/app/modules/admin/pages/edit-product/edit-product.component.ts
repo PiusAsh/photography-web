@@ -44,12 +44,10 @@ export class EditProductComponent implements OnInit {
       id: [this.productId],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', Validators.required],
       year: ['', Validators.required],
-      size: this.fb.array([this.createSize()]),
-      print: this.fb.array([this.createPrint()]),
       mainImage: [''],
-      images: this.fb.array([])
+      images: this.fb.array([]),
+      variants: this.fb.array([this.createVariant()])
     });
   }
 
@@ -79,11 +77,8 @@ export class EditProductComponent implements OnInit {
     if (!this.product) return;
 
     // Clear existing form arrays
-    while (this.size.length !== 0) {
-      this.size.removeAt(0);
-    }
-    while (this.print.length !== 0) {
-      this.print.removeAt(0);
+    while (this.variants.length !== 0) {
+      this.variants.removeAt(0);
     }
     while (this.images.length !== 0) {
       this.images.removeAt(0);
@@ -93,7 +88,6 @@ export class EditProductComponent implements OnInit {
     this.productForm.patchValue({
       name: this.product.name,
       description: this.product.description,
-      price: this.product.price,
       year: this.product.year,
       mainImage: this.product.mainImage
     });
@@ -103,28 +97,17 @@ export class EditProductComponent implements OnInit {
       this.mainImagePreviewUrl = this.product.mainImage;
     }
 
-    // Populate size array
-    if (this.product.size && this.product.size.length > 0) {
-      this.product.size.forEach((sizeItem: any) => {
-        this.size.push(this.fb.group({
-          name: [sizeItem.name, Validators.required],
-          amount: [sizeItem.amount, Validators.required]
+    // Populate variants array
+    if (this.product.variants && this.product.variants.length > 0) {
+      this.product.variants.forEach((variantItem: any) => {
+        this.variants.push(this.fb.group({
+          price: [variantItem.price, Validators.required],
+          type: [variantItem.type, Validators.required],
+          size: [variantItem.size, Validators.required]
         }));
       });
     } else {
-      this.size.push(this.createSize());
-    }
-
-    // Populate print array
-    if (this.product.print && this.product.print.length > 0) {
-      this.product.print.forEach((printItem: any) => {
-        this.print.push(this.fb.group({
-          name: [printItem.name, Validators.required],
-          amount: [printItem.amount, Validators.required]
-        }));
-      });
-    } else {
-      this.print.push(this.createPrint());
+      this.variants.push(this.createVariant());
     }
 
     // Populate images array
@@ -136,46 +119,28 @@ export class EditProductComponent implements OnInit {
     }
   }
 
-  createSize(): FormGroup {
+  createVariant(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      amount: ['', Validators.required]
+      price: ['', Validators.required],
+      type: ['', Validators.required],
+      size: ['', Validators.required]
     });
   }
 
-  createPrint(): FormGroup {
-    return this.fb.group({
-      name: ['', Validators.required],
-      amount: ['', Validators.required]
-    });
+  get variants(): FormArray {
+    return this.productForm.get('variants') as FormArray;
   }
 
-  get size(): FormArray {
-    return this.productForm.get('size') as FormArray;
+  addVariant(): void {
+    this.variants.push(this.createVariant());
   }
 
-  get print(): FormArray {
-    return this.productForm.get('print') as FormArray;
+  removeVariant(index: number): void {
+    this.variants.removeAt(index);
   }
 
   get images(): FormArray {
     return this.productForm.get('images') as FormArray;
-  }
-
-  addSize(): void {
-    this.size.push(this.createSize());
-  }
-
-  addPrint(): void {
-    this.print.push(this.createPrint());
-  }
-
-  removeSize(index: number): void {
-    this.size.removeAt(index);
-  }
-
-  removePrint(index: number): void {
-    this.print.removeAt(index);
   }
 
   triggerMainFileInputClick(): void {
@@ -351,4 +316,4 @@ export class EditProductComponent implements OnInit {
   onCancel(): void {
     this.router.navigate(['/app/all-products']);
   }
-} 
+}

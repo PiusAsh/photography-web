@@ -9,12 +9,10 @@ interface Product {
   name: string;
   description: string;
   images: string[];
-  size: Array<{ name: string; amount: number }>;
   year: number;
-  price: number;
-  print: Array<{ name: string; amount: number }>;
   mainImage: string;
   dateCreated: string;
+  variants: Array<{ price: number; type: string; size: string; }>;
 }
 
 interface ProductsResponse {
@@ -132,12 +130,14 @@ export class AllProductsComponent implements OnInit {
   }
 
   getPriceRange(product: Product): string {
-    const prices = [...product.size.map(s => s.amount), ...product.print.map(p => p.amount)];
-    if (prices.length === 0) return 'N/A';
+    if (!product.variants || product.variants.length === 0) {
+      return 'N/A';
+    }
     
+    const prices = product.variants.map(v => v.price);
     const min = Math.min(...prices);
     const max = Math.max(...prices);
     
     return min === max ? `₦${min.toLocaleString()}` : `₦${min.toLocaleString()} - ₦${max.toLocaleString()}`;
   }
-} 
+}
