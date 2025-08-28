@@ -6,8 +6,6 @@ export interface Product {
   year: number;
   price: number;
   mainImage: string;
-  size?: any;
-  print?: any;
   priceRange?: string;
 }
 

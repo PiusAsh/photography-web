@@ -71,18 +71,14 @@ export class Store implements OnInit {
     this.loading = true;
     const url = `${environment.BASE_URL}Products?PageNumber=${this.currentPage}&PageSize=${this.pageSize}&searchTerm=${this.searchTerm}`;
     
-    this.http.get<ProductsResponse>(url).subscribe({
+    this.http.get<any>(url).subscribe({
       next: (response) => {
         if (response.status) {
-          this.products = response?.data?.items.map(product => {
-            const sizes = product?.size || [];
-            const prints = product?.print || [];
-
-            if (sizes?.length > 0 && prints?.length > 0) {
-              const sizeAmounts = sizes?.map((s: { amount: any; }) => s.amount);
-              const printAmounts = prints?.map((p: { amount: any; }) => p.amount);
-              const minPrice = Math.min(...sizeAmounts) + Math.min(...printAmounts);
-              const maxPrice = Math.max(...sizeAmounts) + Math.max(...printAmounts);
+          this.products = response?.data?.items.map((product: { variants: { price: any; }[]; priceRange: string; }) => {
+            if (product.variants && product.variants.length > 0) {
+              const prices = product.variants.map((v: { price: any; }) => v.price);
+              const minPrice = Math.min(...prices);
+              const maxPrice = Math.max(...prices);
               product.priceRange = `₦${minPrice.toLocaleString()} – ₦${maxPrice.toLocaleString()}`;
             } else {
               product.priceRange = 'N/A';
@@ -127,7 +123,7 @@ export class Store implements OnInit {
   }
 
   addToCart(product: Product) {
-    // this.cartService.addToCart(product);
+    // this.cartService.addToCart(product); // This needs to be updated to handle variants
   }
 
   viewProduct(item: Product) {

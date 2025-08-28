@@ -252,8 +252,8 @@
 
                           </div>
                           <div class="item-meta">
-                            <span class="item-options" *ngIf="item.options?.print?.name">Print: <small> {{ item.options.print.name }}</small></span>
-                            <span class="item-options" *ngIf="item.options?.size?.name">Size: {{ item.options.size.name }}</span>
+                            <span class="item-options" *ngIf="item?.options?.type">Print: <small> {{ item?.options?.type }}</small></span>
+                            <span class="item-options" *ngIf="item?.options?.size">Size: {{ item?.options.size }}</span>
                           </div>
                         </div>
                         <div class="item-total">

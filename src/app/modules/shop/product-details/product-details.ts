@@ -26,6 +26,7 @@ export class ProductDetails implements OnInit, OnDestroy {
   selectedType: string | null = null;
   selectedSize: string | null = null;
   currentPrice: number = 0;
+  variantPriceRange: string = '';
 
   private routeSub: Subscription | undefined;
   private cartSub: Subscription | undefined;
@@ -67,6 +68,7 @@ export class ProductDetails implements OnInit, OnDestroy {
           this.product = response.data;
           this.selectedImage = this.product?.mainImage || '';
           this.populateTypes();
+          this.calculateVariantPriceRange();
           this.loadSuggestedProducts();
           this.resetSelectionsAndState();
         } else {
@@ -198,5 +200,16 @@ export class ProductDetails implements OnInit, OnDestroy {
     const container = this.thumbnailContainer.nativeElement;
     const scrollAmount = 150;
     container.scrollLeft += (direction === 'left' ? -scrollAmount : scrollAmount);
+  }
+
+  calculateVariantPriceRange(): void {
+    if (this.product?.variants && this.product.variants.length > 0) {
+      const prices = this.product.variants.map((v: { price: number; }) => v.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      this.variantPriceRange = `₦${minPrice.toLocaleString()} – ₦${maxPrice.toLocaleString()}`;
+    } else {
+      this.variantPriceRange = 'N/A';
+    }
   }
 }

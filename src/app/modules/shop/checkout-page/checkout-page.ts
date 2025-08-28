@@ -99,7 +99,16 @@ export class CheckoutPage implements OnInit {
                 // Update payment status after successful payment
                 const updatePayload = {
                   paymentStatus: response.status,
-                  transactionReference: response.reference
+                  transactionReference: response.reference,
+                        orderItems: this.cartItems?.map(item => ({
+        ProductName: item.product?.name,
+        productId: item.product.id,
+        productImage: item.product.mainImage, // Added this line
+        quantity: item.quantity,
+        unitPrice: item.product.price,
+        totalPrice: item.product.price * item.quantity,
+        options: item.options
+      })),
                 };
                 this.storeService.updatePaymentStatus(response.reference, updatePayload).subscribe({
                   next: (updateRes) => {

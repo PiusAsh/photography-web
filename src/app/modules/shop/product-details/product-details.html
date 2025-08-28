@@ -44,12 +44,18 @@
      <!-- PRODUCT INFO -->
 <div class="col-md-5">
   <h2 class="fw-bold mt-4 mb-2">{{ product?.name }}</h2>
-  <p class="text-muted">{{ product?.description }}</p>
- 
-  <ul class="list-unstyled d-flex gap-3 mb-2 small">
-    <li><strong>Year:</strong> {{ product?.year }}</li>
-    <!-- <li><strong>Images:</strong> {{ product?.images?.length }} photos</li> -->
-  </ul>
+<p class="text-muted">{{ product?.description }}</p>
+<!-- Price Range -->
+<div class="mb-3">
+  <div class="d-flex align-items-center gap-2">
+    <span class="text-muted">Price Range:</span>
+    <span class="fw-bold" style="font-size: 20px!important;">{{ variantPriceRange }}</span>
+  </div>
+</div>
+<ul class="list-unstyled d-flex gap-3 mb-2 small">
+  <li><strong>Year:</strong> {{ product?.year }}</li>
+  <!-- <li><strong>Images:</strong> {{ product?.images?.length }} photos</li> -->
+</ul>
 
  
 
